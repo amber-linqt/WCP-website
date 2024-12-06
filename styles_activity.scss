@@ -1,0 +1,391 @@
+$themeColor: #f2eee9;
+$titleColor: #e85234;
+$buttonColor: #f1a99b;
+$dateColor: rgb(137, 43, 43);
+$formColor: rgb(49, 47, 47);
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: normal;
+}
+
+body {
+  background-color: $themeColor;
+  font-family: Poppins, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+
+  header {
+    nav {
+      display: flex;
+      justify-content: flex-end; // 水平對齊
+      align-items: center; // 垂直對齊
+      .logo {
+        display: flex;
+        margin-right: auto;
+        align-items: center;
+        width: 40%;
+        &:hover {
+          border: 0;
+        }
+        img {
+          height: 10vh;
+          flex-shrink: 1;
+        }
+        h1 {
+          flex-shrink: 4;
+        }
+      }
+      #sidebar-active {
+        display: none;
+      }
+      .open {
+        display: none;
+        padding: 0 30px;
+      }
+    }
+    .links-container {
+      margin-left: 0;
+      height: 100%;
+      width: 60%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-end;
+      .close {
+        display: none;
+        padding: 0 20px;
+      }
+      a {
+        height: 100%;
+        width: 100%;
+        padding: 30px 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        color: black;
+        &:hover {
+          background-color: $buttonColor;
+        }
+      }
+    }
+  }
+  main {
+    background-color: $dateColor;
+    height: 100%;
+    width: 100%;
+    h1 {
+      padding: 2rem 2rem 1rem 2rem;
+      font-size: 30px;
+      color: white;
+    }
+
+    .custom-select {
+      padding: 0 2rem 1rem 2rem;
+
+      select {
+        padding: 10px;
+        font-size: 0.8rem;
+        background-color: $dateColor;
+        color: white;
+        border-color: rgba(128, 128, 128, 0.704);
+      }
+    }
+    .edit-box {
+      position: absolute;
+      top: 10%;
+      left: 50%;
+      padding: 1rem;
+      background-color: $formColor;
+      display: flex;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      align-items: center;
+      width: 30%;
+      height: 100vh;
+      p {
+        font-size: 1.5rem;
+        color: white;
+        margin-bottom: 1rem;
+      }
+      button {
+        width: 80%;
+        height: 10%;
+        font-size: 1rem;
+        font-weight: 400;
+        color: #4682b4;
+        background-color: rgb(46, 44, 44);
+        padding: 20px 30px;
+        border: 1px solid gray;
+        border-radius: 10px;
+        text-align: center;
+        &:hover {
+          cursor: pointer;
+          background-color: $formColor;
+        }
+      }
+    }
+    .event {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      padding: 1rem;
+      &:hover {
+        cursor: pointer;
+      }
+
+      .event-box {
+        background-color: $themeColor;
+        border-radius: 15px;
+        width: 20%;
+        max-height: 60%;
+        margin: 2.5%;
+        display: flex;
+        flex-wrap: nowrap;
+        flex-direction: column;
+        img {
+          border-radius: 10px 10px 0 0;
+          position: relative;
+          object-fit: scale-down;
+          max-height: 60%;
+        }
+        .event-date {
+          width: 75px;
+          position: absolute;
+          border-radius: 10px 0;
+          background-color: $themeColor;
+          padding: 5px 10px;
+          text-align: center;
+          p {
+            font-size: 0.75rem;
+            font-weight: 300;
+            color: $dateColor;
+          }
+          .day {
+            margin-top: -0.3rem;
+            font-size: 1.75rem;
+          }
+        }
+      }
+      .hide {
+        display: none;
+      }
+      .event-info {
+        padding: 2rem;
+        text-align: left;
+        .location {
+          margin: -10px 0;
+          color: rgb(165, 164, 164);
+          font-size: 15px;
+          font-weight: 300;
+        }
+        .time {
+          background-color: rgba(183, 183, 183, 0.819);
+          border-radius: 15px;
+          padding: 8px;
+          line-height: 1rem;
+          width: 60%;
+          font-size: 15px;
+          font-weight: 300;
+        }
+      }
+    }
+    .edit-event-box {
+      background-color: rgba(0, 0, 0, 0.4);
+      border: 0;
+      height: 100%;
+      width: 50%;
+      position: fixed;
+      bottom: 0;
+      overflow: scroll;
+      select {
+        display: block;
+        background-color: $formColor;
+        color: gray;
+        padding: 20px;
+        width: 90%;
+        border-radius: 10px;
+        margin: 2px 0 20px 0;
+        border: 1px solid gray;
+        &:not(:selected):valid {
+          background-color: $themeColor;
+          color: $formColor;
+        }
+      }
+      form {
+        position: relative;
+        display: flex;
+        flex-wrap: nowrap;
+        flex-direction: column;
+        justify-content: center;
+
+        background-color: $formColor;
+        padding: 20px;
+        width: 80%;
+        border-radius: 15px;
+        left: 10%;
+        top: 5%;
+
+        p {
+          margin: 0 2rem;
+          text-align: center;
+          width: 50%;
+          color: #4682b4;
+        }
+        .top {
+          display: flex;
+          flex-wrap: nowrap;
+          flex-direction: row;
+          align-items: center;
+          top: -10%;
+          margin-bottom: 10px;
+          button {
+            width: 40%;
+            height: 10%;
+            font-size: 0.8rem;
+            font-weight: 400;
+            color: #4682b4;
+            background-color: rgb(46, 44, 44);
+            text-align: center;
+            border: none;
+            &:hover {
+              cursor: pointer;
+              background-color: $formColor;
+            }
+          }
+        }
+      }
+      input:not(.img-input) {
+        height: 25%;
+        width: 90%;
+        padding: 20px 10px 10px 10px;
+        margin: 2px 0 20px 0;
+        border: 1px solid gray;
+        border-radius: 10px;
+        background-color: $formColor;
+        color: white;
+        &:not(:focus):valid {
+          background-color: $themeColor;
+          color: $formColor;
+        }
+        &:focus ~ .floating-label,
+        &:not(:focus):valid ~ .floating-label {
+          font-size: 12px;
+          padding-top: 5px;
+          opacity: 1;
+        }
+      }
+      .floating-label {
+        display: inline-block;
+        position: absolute;
+        left: 5%;
+        padding: 1rem;
+        transition: 0.2s ease all;
+        color: gray;
+        font-size: 15px;
+        pointer-events: none;
+      }
+
+      textarea {
+        border-radius: 10px;
+        padding: 20px;
+        margin: 2px 0 20px 0;
+        width: 90%;
+        background-color: $formColor;
+        color: white;
+        &:not(:focus):valid {
+          background-color: $themeColor;
+          color: $formColor;
+        }
+
+        &:focus ~ .floating-label.text,
+        &:not(:focus):valid ~ .floating-label.text {
+          padding-top: 3px;
+          font-size: 11px;
+          opacity: 1;
+        }
+      }
+      .text {
+        left: 5%;
+        padding: 1rem;
+      }
+      .img-input-box {
+        height: 25%;
+        width: 90%;
+        padding: 10px;
+        margin: 2px 0 20px 0;
+        border-radius: 10px;
+        background-color: $formColor;
+        color: gray;
+        font-size: 15px;
+        border: 1px solid gray;
+        display: flex;
+        flex-wrap: nowrap;
+        flex-direction: row;
+        label {
+          flex: 2 1 auto;
+        }
+        .img-input {
+          flex: 1 1 auto;
+          width: 30%;
+        }
+      }
+    }
+  }
+  .modal {
+    background-color: rgba(0, 0, 0, 0.4);
+    border: 0;
+    height: 100%;
+    position: fixed;
+    bottom: 0;
+    overflow: scroll;
+
+    .modal-container {
+      position: relative;
+      width: 40%;
+      background-color: white;
+      border-radius: 15px;
+      margin: 2rem 1rem;
+      left: 30%;
+
+      #band-name {
+        padding: 1.5rem;
+        text-align: center;
+        font-size: 2rem;
+      }
+      span {
+        float: right;
+        .fa-solid {
+          padding: 0.5rem;
+          margin: 20px;
+
+          &:hover {
+            color: rgb(192, 192, 192);
+          }
+        }
+      }
+      img {
+        width: 100%;
+        align-self: center;
+      }
+
+      p {
+        padding: 10px 20px;
+      }
+      #show-time {
+        background-color: rgba(128, 128, 128, 0.15);
+        padding: 20px;
+      }
+    }
+  }
+}

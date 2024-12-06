@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>What's coming up</title>
+    <meta name="author" content="Amber Lin" />
+    <script
+      src="https://kit.fontawesome.com/839c1e07aa.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <link rel="icon" src="./image/logo.svg" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <div class="logo">
+          <a href="#"><img src="./image/logo.svg" alt="WCP_logo" /></a>
+          <h1>What's coming up</h1>
+        </div>
+        <input type="checkbox" id="sidebar-active" />
+        <label for="sidebar-active" class="open">
+          <i class="fa-solid fa-bars fa-lg"></i>
+        </label>
+        <label for="sidebar-active" id="overlay"></label>
+        <div class="links-container">
+          <label for="sidebar-active" class="close"
+            ><i class="fa-solid fa-x"></i>
+          </label>
+
+          <a href="#">關於WCP</a>
+          <a href="activity.html">找活動</a>
+          <a href="login.html">會員登入</a>
+          <a href="mycalender.html">我的行事曆</a>
+          <a href="contactus.html">聯絡我們</a>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <div class="image-1">
+        <img src="./image/未命名.jpg" alt="hangout" />
+        <!-- <div class="overlay-text">
+          <h3>
+            好不容易休假，<br />不想待在家...... <br />但又不知道去哪裡嗎？
+          </h3>
+        </div> -->
+      </div>
+
+      <div class="category">
+        <div class="category-title">
+          <h3>各種活動</h3>
+          <p>What's coming up 整理了各類近期舉辦的活動</p>
+        </div>
+        <div class="row">
+          <img src="./image/concert.svg" alt="concert" class="order-1" />
+          <div class="content order-2">
+            <h3>表演活動</h3>
+            <p>
+              無論是戲劇、舞蹈、音樂還是綜合藝術，
+              <br />
+              以生動的演繹方式讓觀眾身臨其境，感受藝術的力量。
+            </p>
+            <button type="button" class="info-button">
+              <span>馬上探索</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="content order-4">
+            <h3>藝術展覽</h3>
+            <p>
+              展覽、表演、講座等，欣賞藝術家的獨特視角，
+              <br />激發觀眾的思考與感官體驗。
+            </p>
+            <button type="button" class="info-button">
+              <span>馬上探索</span>
+            </button>
+          </div>
+          <img src="./image/art.svg" alt="art" class="order-3" />
+        </div>
+        <div class="row">
+          <img src="./image/culture.svg" class="order-5" />
+          <div class="content order-6">
+            <h3>異國文化體驗</h3>
+            <p>
+              體驗異國文化，探索不同風俗、藝術與生活方式，
+              <br />
+              開闊視野，增進跨文化理解與交流。
+            </p>
+            <button type="button" class="info-button">
+              <span>馬上探索</span>
+            </button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="content order-8">
+            <h3>戶外活動</h3>
+            <p>
+              親近自然，鍛鍊身心，放鬆壓力，
+              <br />享受冒險與探索的樂趣，和朋友共度美好時光。
+            </p>
+            <button type="button" class="info-button">
+              <span>馬上探索</span>
+            </button>
+          </div>
+          <img src="./image/game.svg" class="order-7" />
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

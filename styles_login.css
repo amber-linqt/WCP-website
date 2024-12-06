@@ -1,0 +1,304 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: normal;
+}
+
+body {
+  background-color: #f2eee9;
+  font-family: Poppins, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+body header nav {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+body header nav .logo {
+  display: flex;
+  margin-right: auto;
+  align-items: center;
+  width: 40%;
+}
+body header nav .logo:hover {
+  border: 0;
+}
+body header nav .logo img {
+  height: 10vh;
+  flex-shrink: 1;
+}
+body header nav .logo h1 {
+  flex-shrink: 4;
+}
+body header nav #sidebar-active {
+  display: none;
+}
+body header nav .open {
+  display: none;
+  padding: 0 30px;
+}
+body header .links-container {
+  margin-left: 0;
+  height: 100%;
+  width: 60%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+}
+body header .links-container .close {
+  display: none;
+  padding: 0 20px;
+}
+body header .links-container a {
+  height: 100%;
+  width: 100%;
+  padding: 30px 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: black;
+}
+body header .links-container a:hover {
+  background-color: #f1a99b;
+}
+body main {
+  background-color: rgba(137, 43, 43, 0.786);
+  display: flex;
+  flex-direction: row;
+  height: 80vh;
+}
+body main .left {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+body main .left p {
+  color: white;
+  font-size: 3rem;
+  margin: 1rem 1.5rem;
+}
+body main .left .img-box {
+  width: 50%;
+  height: 80%;
+}
+body main .left .img-box img {
+  position: relative;
+  height: 100%;
+}
+body main .right {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  margin-left: auto;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 10px;
+  position: relative;
+}
+body main .right .switch-btn {
+  width: 60%;
+  position: relative;
+  top: 2.5%;
+  left: 5%;
+}
+body main .right .switch-btn button {
+  position: relative;
+  background-color: #f1a99b;
+  border: none;
+  border-radius: 15px 15px 0 0;
+  padding: 0.5rem 1rem 0.3rem 1rem;
+  letter-spacing: 2px;
+  font-size: 20px;
+}
+body main .right .switch-btn button:hover {
+  color: rgb(137, 43, 43);
+  cursor: pointer;
+}
+body main .right .switch-btn .active {
+  border: none;
+  background-color: #f2eee9;
+  padding-bottom: 1rem;
+}
+body main .right .member-form {
+  background-color: #f2eee9;
+  border-radius: 10px;
+  height: 80%;
+  width: 60%;
+}
+body main .right .member-form form {
+  position: relative;
+  left: 10%;
+  top: 0.5rem;
+}
+body main .right .member-form form input {
+  width: 80%;
+  display: block;
+  padding: 10px 5px;
+  margin: 1rem 0;
+  border: none;
+  border-radius: 10px;
+  height: 50px;
+}
+body main .right .member-form .social-media-logo {
+  position: relative;
+  top: 10%;
+  margin: 1.5rem 2rem;
+  text-align: center;
+}
+body main .right .member-form .social-media-logo p {
+  margin-bottom: 10px;
+  color: rgba(128, 128, 128, 0.867);
+  font-size: small;
+  text-align: center;
+}
+body main .right .member-form .social-media-logo i {
+  font-size: 2rem;
+  margin: 5px 10px;
+}
+body main .right .member-form .social-media-logo i:hover {
+  cursor: pointer;
+}
+body main .right .member-form .social-media-logo .fa-facebook {
+  color: #4267b2;
+  background-color: white;
+  border-radius: 50%;
+}
+body main .right .member-form .social-media-logo .fa-google {
+  color: transparent;
+  background: conic-gradient(from -45deg, #ea4335 110deg, #4285f4 90deg 180deg, #34a853 180deg 270deg, #fbbc05 270deg) 73% 55%/150% 150% no-repeat;
+  -webkit-background-clip: text;
+          background-clip: text;
+}
+body main .right .member-form .social-media-logo .fa-apple {
+  color: black;
+}
+body main .right .member-form .social-media-logo .down-button {
+  position: relative;
+  padding: 0.5rem;
+  margin: 0 1rem;
+  text-align: center;
+  background-color: #f1a99b;
+  border: none;
+  border-radius: 10px;
+  width: 30%;
+  left: 10%;
+}
+body main .right .member-form .social-media-logo .down-button:hover {
+  cursor: pointer;
+  background-color: #fab4a6;
+}
+body main .right .member-form .down-button {
+  padding: 10px;
+  display: block;
+  text-align: center;
+  background-color: #f1a99b;
+  border: none;
+  border-radius: 10px;
+  width: 80%;
+  position: relative;
+  left: 10%;
+  top: 10%;
+}
+body main .right .member-form .down-button:hover {
+  cursor: pointer;
+  background-color: #fab4a6;
+}
+body main .right .new-member {
+  background-color: #f2eee9;
+  height: 80%;
+  width: 60%;
+  border-radius: 10px;
+}
+body main .right .new-member form {
+  position: relative;
+  left: 10%;
+  top: 0.5rem;
+}
+body main .right .new-member form input {
+  width: 80%;
+  display: block;
+  padding: 10px 5px;
+  margin: 1rem 0;
+  border: none;
+  border-radius: 10px;
+  height: 50px;
+}
+body main .right .new-member .social-media-logo {
+  position: relative;
+  top: 5%;
+  margin: 1.5rem 2rem;
+  text-align: center;
+}
+body main .right .new-member .social-media-logo p {
+  margin-bottom: 10px;
+  color: rgba(128, 128, 128, 0.867);
+  font-size: small;
+  text-align: center;
+}
+body main .right .new-member .social-media-logo i {
+  font-size: 2rem;
+  margin: 5px 10px;
+}
+body main .right .new-member .social-media-logo i:hover {
+  cursor: pointer;
+}
+body main .right .new-member .social-media-logo .fa-facebook {
+  color: #4267b2;
+  background-color: white;
+  border-radius: 50%;
+}
+body main .right .new-member .social-media-logo .fa-google {
+  color: transparent;
+  background: conic-gradient(from -45deg, #ea4335 110deg, #4285f4 90deg 180deg, #34a853 180deg 270deg, #fbbc05 270deg) 73% 55%/150% 150% no-repeat;
+  -webkit-background-clip: text;
+          background-clip: text;
+}
+body main .right .new-member .social-media-logo .fa-apple {
+  color: black;
+}
+body main .right .new-member .social-media-logo .down-button {
+  position: relative;
+  padding: 0.5rem;
+  margin: 0 1rem;
+  text-align: center;
+  background-color: #f1a99b;
+  border: none;
+  border-radius: 10px;
+  width: 30%;
+  left: 10%;
+}
+body main .right .new-member .social-media-logo .down-button:hover {
+  cursor: pointer;
+  background-color: #fab4a6;
+}
+body main .right .new-member .submit-button {
+  padding: 10px;
+  display: block;
+  text-align: center;
+  background-color: #f1a99b;
+  border: none;
+  border-radius: 10px;
+  width: 80%;
+  position: relative;
+  left: 10%;
+  top: 5%;
+}
+body main .right .new-member .submit-button:hover {
+  cursor: pointer;
+  background-color: #fab4a6;
+}
+body main .right .hide {
+  display: none;
+}/*# sourceMappingURL=styles_login.css.map */

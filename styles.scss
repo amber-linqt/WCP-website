@@ -1,0 +1,314 @@
+$themeColor: #f2eee9;
+$titleColor: #e85234;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: normal;
+}
+
+body {
+  background-color: $themeColor;
+  font-family: Poppins, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+
+  header {
+    nav {
+      display: flex;
+      justify-content: flex-end; // 水平對齊
+      align-items: center; // 垂直對齊
+      .logo {
+        display: flex;
+        margin-right: auto;
+        align-items: center;
+        width: 40%;
+        &:hover {
+          border: 0;
+        }
+        img {
+          height: 10vh;
+          flex-shrink: 1;
+        }
+        h1 {
+          flex-shrink: 4;
+        }
+      }
+      #sidebar-active {
+        display: none;
+      }
+      .open {
+        display: none;
+        padding: 0 30px;
+      }
+    }
+    .links-container {
+      margin-left: 0;
+      height: 100%;
+      width: 60%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-end;
+      .close {
+        display: none;
+        padding: 0 20px;
+      }
+      a {
+        height: 100%;
+        width: 100%;
+        padding: 30px 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        color: black;
+        &:hover {
+          background-color: #f1a99b;
+        }
+      }
+    }
+  }
+}
+
+main {
+  .image-1 {
+    height: 40%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: -1;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img {
+      position: relative;
+      display: block;
+      width: 100%;
+      max-height: 70vh;
+      object-fit: cover;
+      z-index: -2;
+    }
+    .overlay-text {
+      position: absolute;
+      flex: auto 2 805px;
+      border: 2px solid violet;
+      top: 20%;
+      left: 5%;
+      padding: 0.5rem;
+      text-align: left;
+      line-height: 1rem;
+      letter-spacing: 1px;
+
+      h3 {
+        line-height: 2;
+        font-size: 1.5rem;
+        color: rgb(251, 250, 250);
+      }
+    }
+  }
+
+  .category {
+    display: flexbox;
+    .category-title {
+      margin-top: 1rem;
+      height: 20vh;
+      display: flex;
+      justify-content: space-evenly; //增加行距
+      flex-direction: column; // 如果不加，放大後會變成一行
+      text-align: center; //文字置中
+      line-height: 3rem;
+      letter-spacing: 1px;
+
+      h3 {
+        color: $titleColor;
+        font-size: 2rem;
+      }
+      p {
+        font-size: 1.5rem;
+      }
+    }
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center; //垂直對齊
+      justify-content: space-around;
+
+      .content {
+        border: 2px solid violet;
+        border-radius: 10px;
+        padding: 1rem;
+        position: relative;
+        margin: 2rem;
+        top: -30px;
+        text-align: left;
+        h3 {
+          color: $titleColor;
+          font-size: 1.5rem;
+          margin-bottom: 10px;
+        }
+        p {
+          line-height: 2rem;
+        }
+        .info-button {
+          margin-top: 50px;
+          font-size: 1.25rem;
+          width: 200px;
+          text-align: center;
+          padding: 10px 0px;
+          border-radius: 100px / 100px;
+          background-color: rgb(253, 132, 108);
+          color: $themeColor;
+          border: none;
+
+          span {
+            transition: 0.5s;
+
+            &::after {
+              content: "\00bb";
+              opacity: 0;
+            }
+          }
+          &:hover {
+            cursor: pointer;
+            span {
+              padding-right: 15px;
+              &::after {
+                transition: 0.5s;
+                opacity: 1;
+                position: relative;
+                left: 10px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1020px) {
+  body {
+    header {
+      nav {
+        .logo {
+          width: 80vw; // 螢幕縮小，佔比增加
+        }
+
+        #sidebar-active {
+          &:checked ~ .links-container {
+            right: 0; // 打開後再螢幕右上方
+          }
+          &:checked ~ #overlay {
+            height: 100%;
+            width: 100%;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 5;
+          }
+        }
+        .open {
+          display: block;
+          padding: 0 30px;
+        }
+        .links-container {
+          height: auto;
+          flex-direction: column;
+          align-items: flex-start;
+          justify-content: flex-start; // 保持向右對齊關起
+          position: fixed;
+          top: 0;
+          right: -100%; // 藏到螢幕右邊
+          z-index: 10;
+          width: 25vw;
+          height: 100vh;
+
+          background-color: $themeColor;
+          box-shadow: -5px 0 5px rgba(0, 0, 0, 0.5);
+          transition: all 0.75s ease;
+          .close {
+            display: block;
+            padding: 15px;
+            text-align: right; // x 移到右邊
+          }
+          a {
+            justify-content: flex-start; //文字向左對齊
+            padding: 10px 15px;
+            height: auto; //滿版，但每一格都在畫面內
+          }
+        }
+      }
+    }
+    main {
+      .image-1 {
+        .overlay-text {
+          font-size: 10px;
+          line-height: 0;
+        }
+      }
+      .category {
+        .category-title {
+          top: 10px;
+          padding: 1rem;
+        }
+        .row {
+          justify-content: space-evenly;
+          .order-1 {
+            order: 1;
+          }
+          .order-2 {
+            order: 2;
+          }
+          .order-3 {
+            order: 3;
+            position: relative;
+            top: -30px;
+          }
+          .order-4 {
+            order: 4;
+          }
+          .order-5 {
+            order: 5;
+          }
+          .order-6 {
+            order: 6;
+          }
+          .order-7 {
+            order: 7;
+            position: relative;
+            top: -30px;
+          }
+          .order-8 {
+            order: 8;
+            position: relative;
+            top: -80px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 500px) {
+  body {
+    main {
+      .category {
+        .row {
+          img {
+            width: 80%;
+            margin-top: 20px;
+          }
+        }
+      }
+    }
+  }
+}

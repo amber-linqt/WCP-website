@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>What's coming up｜聯絡我們</title>
+    <meta name="author" content="Amber Lin" />
+    <script
+      src="https://kit.fontawesome.com/839c1e07aa.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="./styles_contactus.css" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <div class="logo">
+          <a href="#"><img src="./image/logo.svg" alt="WCP_logo" /></a>
+          <h1>What's coming up</h1>
+        </div>
+        <input type="checkbox" id="sidebar-active" />
+        <label for="sidebar-active" class="open">
+          <i class="fa-solid fa-bars fa-lg"></i>
+        </label>
+        <label for="sidebar-active" id="overlay"></label>
+        <div class="links-container">
+          <label for="sidebar-active" class="close"
+            ><i class="fa-solid fa-x"></i>
+          </label>
+
+          <a href="homepage.html">關於WCP</a>
+          <a href="activity.html">找活動</a>
+          <a href="login.html">會員登入</a>
+          <a href="mycalender.html">我的行事曆</a>
+          <a href="#">聯絡我們</a>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <div class="image-2">
+        <img src="./image/img-2.jpg" alt="contact" />
+
+        <div class="overlay-text">
+          <p class="title">聯絡我們</p>
+        </div>
+      </div>
+      <div class="section-1">
+        <div class="map">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3332.360294698848!2d120.29887289732987!3d22.63969118567445!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x346e04f4871d07a7%3A0xccb9296f1ea5e649!2z6auY6ZuE6LuK56uZ!5e1!3m2!1szh-TW!2stw!4v1732247554845!5m2!1szh-TW!2stw"
+            width="600"
+            height="450"
+            style="border: 0"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+        <form>
+          <label for="name">姓名：</label>
+          <input id="name" name="name" type="text" required />
+          <label for="phone">電話：</label>
+          <input id="phone" name="phone" type="text" required />
+          <label for="email">E-mail：</label>
+          <input id="email" name="email" type="email" required />
+          <label for="message">您的訊息：</label>
+          <textarea id="message" name="message" rows="6" required> </textarea>
+          <div class="button">
+            <button type="submit">送出</button>
+            <button type="reset">清除</button>
+          </div>
+        </form>
+      </div>
+    </main>
+    <footer>
+      <div class="call">
+        <i class="fa-solid fa-phone"></i>
+        <div class="info">
+          <p class="title">聯絡電話</p>
+          <p>07-123-4567</p>
+        </div>
+      </div>
+      <div class="email">
+        <i class="fa-solid fa-envelope"></i>
+        <div class="info">
+          <p class="title">E-mail</p>
+          <p>whatcomingup@gmail.com</p>
+        </div>
+      </div>
+      <div class="location">
+        <i class="fa-solid fa-house"></i>
+        <div class="info">
+          <p class="title">工作室地點</p>
+          <p>807高雄市三民區建國二路xxx號</p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,335 @@
+$themeColor: #f2eee9;
+$titleColor: #e85234;
+$buttonColor: #f1a99b;
+$dateColor: rgb(137, 43, 43);
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: normal;
+}
+
+body {
+  background-color: $themeColor;
+  font-family: Poppins, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+
+  header {
+    nav {
+      display: flex;
+      justify-content: flex-end; // 水平對齊
+      align-items: center; // 垂直對齊
+      .logo {
+        display: flex;
+        margin-right: auto;
+        align-items: center;
+        width: 40%;
+        &:hover {
+          border: 0;
+        }
+        img {
+          height: 10vh;
+          flex-shrink: 1;
+        }
+        h1 {
+          flex-shrink: 4;
+        }
+      }
+      #sidebar-active {
+        display: none;
+      }
+      .open {
+        display: none;
+        padding: 0 30px;
+      }
+    }
+    .links-container {
+      margin-left: 0;
+      height: 100%;
+      width: 60%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-end;
+      .close {
+        display: none;
+        padding: 0 20px;
+      }
+      a {
+        height: 100%;
+        width: 100%;
+        padding: 30px 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        color: black;
+        &:hover {
+          background-color: $buttonColor;
+        }
+      }
+    }
+  }
+
+  main {
+    background-color: rgba(137, 43, 43, 0.786);
+    display: flex;
+    flex-direction: row;
+    height: 80vh;
+    .left {
+      width: 50%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      p {
+        color: white;
+        font-size: 3rem;
+        margin: 1rem 1.5rem;
+      }
+      .img-box {
+        width: 50%;
+        height: 80%;
+
+        img {
+          position: relative;
+          height: 100%;
+        }
+      }
+    }
+    .right {
+      width: 50%;
+      display: flex;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      margin-left: auto;
+      align-items: center;
+      padding: 1rem;
+      border-radius: 10px;
+      position: relative;
+
+      .switch-btn {
+        width: 60%;
+        position: relative;
+        top: 2.5%;
+        left: 5%;
+
+        button {
+          position: relative;
+          background-color: $buttonColor;
+          border: none;
+          border-radius: 15px 15px 0 0;
+          padding: 0.5rem 1rem 0.3rem 1rem;
+          letter-spacing: 2px;
+          font-size: 20px;
+          &:hover {
+            color: $dateColor;
+            cursor: pointer;
+          }
+        }
+        //button clicked
+        .active {
+          border: none;
+          background-color: $themeColor;
+          padding-bottom: 1rem;
+        }
+      }
+      .member-form {
+        background-color: #f2eee9;
+        border-radius: 10px;
+        height: 80%;
+        width: 60%;
+
+        form {
+          position: relative;
+          left: 10%;
+          top: 0.5rem;
+
+          input {
+            width: 80%;
+            display: block;
+            padding: 10px 5px;
+            margin: 1rem 0;
+            border: none;
+            border-radius: 10px;
+            height: 50px;
+          }
+        }
+
+        .social-media-logo {
+          position: relative;
+          top: 10%;
+          margin: 1.5rem 2rem;
+          text-align: center;
+          p {
+            margin-bottom: 10px;
+            color: rgba(128, 128, 128, 0.867);
+            font-size: small;
+            text-align: center;
+          }
+          i {
+            font-size: 2rem;
+            margin: 5px 10px;
+            &:hover {
+              cursor: pointer;
+            }
+          }
+          .fa-facebook {
+            color: #4267b2;
+            background-color: white;
+            border-radius: 50%;
+          }
+          .fa-google {
+            color: transparent;
+            background: conic-gradient(
+                from -45deg,
+                #ea4335 110deg,
+                #4285f4 90deg 180deg,
+                #34a853 180deg 270deg,
+                #fbbc05 270deg
+              )
+              73% 55%/150% 150% no-repeat;
+            background-clip: text;
+          }
+          .fa-apple {
+            color: black;
+          }
+          .down-button {
+            position: relative;
+            padding: 0.5rem;
+            margin: 0 1rem;
+            text-align: center;
+            background-color: $buttonColor;
+            border: none;
+            border-radius: 10px;
+            width: 30%;
+            left: 10%;
+            &:hover {
+              cursor: pointer;
+              background-color: #fab4a6;
+            }
+          }
+        }
+        .down-button {
+          padding: 10px;
+          display: block;
+          text-align: center;
+          background-color: $buttonColor;
+          border: none;
+          border-radius: 10px;
+          width: 80%;
+          position: relative;
+          left: 10%;
+          top: 10%;
+          &:hover {
+            cursor: pointer;
+            background-color: #fab4a6;
+          }
+        }
+      }
+      .new-member {
+        background-color: #f2eee9;
+        height: 80%;
+        width: 60%;
+        border-radius: 10px;
+
+        form {
+          position: relative;
+          left: 10%;
+          top: 0.5rem;
+          input {
+            width: 80%;
+            display: block;
+            padding: 10px 5px;
+            margin: 1rem 0;
+            border: none;
+            border-radius: 10px;
+            height: 50px;
+          }
+        }
+        .social-media-logo {
+          position: relative;
+          top: 5%;
+          margin: 1.5rem 2rem;
+          text-align: center;
+          p {
+            margin-bottom: 10px;
+            color: rgba(128, 128, 128, 0.867);
+            font-size: small;
+            text-align: center;
+          }
+          i {
+            font-size: 2rem;
+            margin: 5px 10px;
+            &:hover {
+              cursor: pointer;
+            }
+          }
+          .fa-facebook {
+            color: #4267b2;
+            background-color: white;
+            border-radius: 50%;
+          }
+          .fa-google {
+            color: transparent;
+            background: conic-gradient(
+                from -45deg,
+                #ea4335 110deg,
+                #4285f4 90deg 180deg,
+                #34a853 180deg 270deg,
+                #fbbc05 270deg
+              )
+              73% 55%/150% 150% no-repeat;
+            background-clip: text;
+          }
+          .fa-apple {
+            color: black;
+          }
+          .down-button {
+            position: relative;
+            padding: 0.5rem;
+            margin: 0 1rem;
+            text-align: center;
+            background-color: $buttonColor;
+            border: none;
+            border-radius: 10px;
+            width: 30%;
+            left: 10%;
+            &:hover {
+              cursor: pointer;
+              background-color: #fab4a6;
+            }
+          }
+        }
+        .submit-button {
+          padding: 10px;
+          display: block;
+          text-align: center;
+          background-color: $buttonColor;
+          border: none;
+          border-radius: 10px;
+          width: 80%;
+          position: relative;
+          left: 10%;
+          top: 5%;
+          &:hover {
+            cursor: pointer;
+            background-color: #fab4a6;
+          }
+        }
+      }
+
+      //form switch
+      .hide {
+        display: none;
+      }
+    }
+  }
+}

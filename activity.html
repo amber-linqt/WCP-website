@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Air datepicker Css -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
+    <title>What's coming up｜找活動</title>
+    <meta name="author" content="Amber Lin" />
+    <script
+      src="https://kit.fontawesome.com/839c1e07aa.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- Air datepicker Css -->
+    <link rel="stylesheet" href="./styles_activity.css" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <div class="logo">
+          <a href="#"><img src="./image/logo.svg" alt="WCP_logo" /></a>
+          <h1>What's coming up</h1>
+        </div>
+        <input type="checkbox" id="sidebar-active" />
+        <label for="sidebar-active" class="open">
+          <i class="fa-solid fa-bars fa-lg"></i>
+        </label>
+        <label for="sidebar-active" id="overlay"></label>
+        <div class="links-container">
+          <label for="sidebar-active" class="close"
+            ><i class="fa-solid fa-x"></i>
+          </label>
+
+          <a href="homepage.html">關於WCP</a>
+          <a href="#">找活動</a>
+          <a href="login.html">會員登入</a>
+          <a href="mycalender.html">我的行事曆</a>
+          <a href="contactus.html">聯絡我們</a>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <h1>Upcoming Events</h1>
+      <div class="custom-select">
+        <select id="calender">
+          <option>日期</option>
+
+          <!-- Air datepicker Html element -->
+        </select>
+        <select>
+          <option class="active">活動類型</option>
+          <option id="all-type" data-name="all-type">全部</option>
+          <option id="performance" data-name="performance">表演活動</option>
+          <option id="exhibition" data-name="exhibition">藝術展覽</option>
+          <option id="culture" data-name="culture">文化體驗</option>
+          <option id="workshop" data-name="workshop">體驗工作坊</option>
+        </select>
+      </div>
+      <div class="edit-box hide" id="edit-box">
+        <p>Events</p>
+        <button class="add-event" id="add-event">
+          <i class="fa-solid fa-plus"></i> Add Event
+        </button>
+      </div>
+
+    
+       <div class="event" id="event">
+        //插入
+      </div>
+
+      <!-- Modal -->
+      <dialog id="edit-event-box" class="edit-event-box">
+        <form>
+          <div class="top">
+            <button class="modal-btn close-button" type="button">取消</button>
+            <p>新增活動</p>
+            <button class="modal-btn open-button" type="submit">送出</button>
+          </div>
+          <div>
+            <select id="event-type">
+              <option class="active">活動類型</option>
+              <option id="all-type" data-name="all-type">全部</option>
+              <option id="performance" data-name="performance">表演活動</option>
+              <option id="exhibition" data-name="exhibition">藝術展覽</option>
+              <option id="culture" data-name="culture">文化體驗</option>
+              <option id="workshop" data-name="workshop">體驗工作坊</option>
+            </select>
+            <input type="text" id="title-input"  />
+            <span class="floating-label">活動名稱</span>
+          </div>
+          <div>
+            <input id="startDate" class="dateSelector"  />
+            <span class="floating-label">開始時間</label>
+          </div>
+          <div>
+            <input id="endDate" class="dateSelector" />
+            <span class="floating-label">結束時間</label>
+          </div>
+          <div>
+            <input type="text" id="location-input"  />
+            <span class="floating-label">活動地點</span>
+          </div>
+          <div>
+            <textarea rows="5" id="description-input" ></textarea>
+            <span class="floating-label text" 
+              >活動介紹</span
+            >
+          </div>
+          <div class="img-input-box">
+            <label for="img-input">宣傳圖片</label>
+            <input class="img-input" id="img-input"  type="file" />
+          </div>
+          
+        </form>
+      </dialog>
+      <dialog id="modal" class="modal">
+        <div class="modal-container">
+          <span class="close-button">
+            <i class="fa-solid fa-x"></i>
+          </span>
+          <div id="band-name"></div>
+          <img id="img1" />
+          <div id="band-info">
+            <p>
+              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quis
+              necessitatibus consectetur, blanditiis nostrum assumenda
+              dignissimos quos. Quia aperiam doloremque molestiae impedit
+              maiores, rem veritatis ipsam eius, nostrum voluptatibus, quisquam
+              cumque voluptate ipsum id obcaecati! Sunt sed delectus officiis
+              ipsa incidunt.
+            </p>
+          </div>
+          <div id="show-time"></div>
+        </div>
+      </dialog>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
