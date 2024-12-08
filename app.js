@@ -31,6 +31,8 @@ const modalShowTime = document.querySelector("#show-time");
 const addBtn = document.querySelector("#add-event");
 const modal2 = document.querySelector("#edit-event-box");
 
+const allEvent = JSON.parse(localStorage.getItem("myEvent")) || [];
+
 // 設定活動篩選器 fn
 const filterBox = (e) => {
   let selected = document.querySelector(".active");
@@ -61,9 +63,6 @@ closeBtn[0].addEventListener("click", () => {
   modal2.close();
 });
 
-//將活動表單新增到網頁上
-let allEvent = [];
-
 // flatpick function
 const currentTime = new Date();
 
@@ -75,12 +74,28 @@ config = {
   allowInput: true, //可輸入控制
   minDate: "today", //可選最小時間，可直接接受 'today' 字串
   maxDate: currentTime.setMonth(currentTime.getMonth() + 6), //可選最大時間，從今天起一個月,
+  onClose: function (selectedDates, dateStr, instance) {
+    checkDateTime(dateStr, instance.input.id);
+  },
 };
-
 flatpickr(dateSelector, config);
-
 let startDateValue = null;
 let endDateValue = null;
+
+function checkDateTime(dateStr, id) {
+  if (id === "startDate") {
+    startDateValue = dateStr;
+  }
+
+  if (id === "endDate") {
+    endDateValue = dateStr;
+  }
+  if (startDateValue >= endDateValue) {
+    alert("結束時間需晚於開始時間");
+    startDate.value = "";
+    endDate.value = "";
+  }
+}
 
 imgInput.addEventListener("change", (e) => {
   const newImg = document.createElement("img");
@@ -93,15 +108,11 @@ eventForm.addEventListener("submit", (e) => {
   addEvent();
 });
 
-dateSelector[0].addEventListener("change", (e) => {
-  let dateStr;
-  console.log(e.target.value.split(" "));
-});
-
 function addEvent() {
   const eventObj = {
     type: eventType.selectedOptions[0].dataset.name,
     title: titleInput.value.trim(),
+    id: startDate.value + titleInput.value.trim(),
     img: imgInput.src,
     location: locationInput.value.trim(),
     //month, day
@@ -125,9 +136,10 @@ function addEvent() {
     },
   };
   allEvent.push(eventObj);
+  localStorage.setItem("myEvent", JSON.stringify(allEvent));
   eventForm.reset(); //表單送出後清空form
   createEventBox(eventObj);
-  console.log(eventObj.startTime, eventObj.endTime);
+  console.log(allEvent);
 }
 
 // function updateEventBox() {}
@@ -153,11 +165,11 @@ function createEventBox(obj) {
               <p class="location">${eventObj.location}</p>
               <br />
               <p class="time">
-                <i class="fa-solid fa-clock"></i>
+                  <i class="fa-solid fa-clock"></i>
                 ${eventObj.startTime.time}-${eventObj.endTime.time}
               </p>`;
 
-    if (eventObj.duration() == true) {
+    if (eventObj.duration() === true) {
       divEventDate.children[2].classList.add("hide");
       divEventDate.children[3].classList.add("hide");
     }
