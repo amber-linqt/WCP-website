@@ -58,22 +58,23 @@
           <option id="culture" data-name="culture">文化體驗</option>
           <option id="workshop" data-name="workshop">體驗工作坊</option>
         </select>
+        <button class="open-edit-box">編輯活動內容</button>
       </div>
-      <div class="edit-box hide" id="edit-box">
+      <dialog class="edit-box" id="edit-box">
+        <span class="close-button">
+          <i class="fa-solid fa-x"></i>
+        </span>
         <p>Events</p>
         <button class="add-event" id="add-event">
           <i class="fa-solid fa-plus"></i> Add Event
         </button>
-      </div>
-
-    
+      </dialog>
        <div class="event" id="event">
-        //插入
+        
       </div>
-
       <!-- Modal -->
       <dialog id="edit-event-box" class="edit-event-box">
-        <form>
+        <form  method="dialog">
           <div class="top">
             <button class="modal-btn close-button" type="button">取消</button>
             <p>新增活動</p>
@@ -104,6 +105,7 @@
             <span class="floating-label">活動地點</span>
           </div>
           <div>
+            <!-- <div class ="text-filter"></div> -->
             <textarea rows="5" id="description-input" ></textarea>
             <span class="floating-label text" 
               >活動介紹</span
@@ -123,15 +125,8 @@
           </span>
           <div id="band-name"></div>
           <img id="img1" />
-          <div id="band-info">
-            <p>
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quis
-              necessitatibus consectetur, blanditiis nostrum assumenda
-              dignissimos quos. Quia aperiam doloremque molestiae impedit
-              maiores, rem veritatis ipsam eius, nostrum voluptatibus, quisquam
-              cumque voluptate ipsum id obcaecati! Sunt sed delectus officiis
-              ipsa incidunt.
-            </p>
+          <div id="performer-info">
+
           </div>
           <div id="show-time"></div>
         </div>
