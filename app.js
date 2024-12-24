@@ -28,32 +28,11 @@ const modalShowInfo = document.querySelector("#show-time");
 const modal2 = document.querySelector("#edit-event-box");
 
 const allEvent = JSON.parse(localStorage.getItem("myEvent")) || [];
-console.log(editBox, modal2);
 
 updateEventBox();
 editEventBtn();
+editBox.show();
 // 設定活動篩選器 fn
-const filterBox = (e) => {
-  let selected = document.querySelector(".active");
-
-  selected.classList.remove("active");
-  e.target.selectedOptions[0].classList.add("active");
-
-  //---開始篩選---
-  eventBox.forEach((eventBox) => {
-    eventBox.classList.add("hide");
-
-    if (
-      eventBox.value === e.target.selectedOptions[0].value ||
-      e.target.selectedOptions[0].value === "all-type"
-    ) {
-      eventBox.classList.remove("hide");
-    }
-  });
-};
-
-filterSelect.forEach((select) => select.addEventListener("change", filterBox));
-console.log(closeBtn);
 
 //活動編輯器
 openEditBoxBtn.addEventListener("click", () => {
@@ -63,12 +42,16 @@ closeBtn[0].addEventListener("click", (e) => {
   editBox.close();
 });
 addBtn.addEventListener("click", (e) => {
+  const editTitle = document.querySelector(".top > p");
+  closeBtn[1].innerText = "取消";
+  submitBtn.innerText = "完成";
+  editTitle.innerText = "新增活動";
+  eventForm.reset();
   modal2.show();
 });
 closeBtn[1].addEventListener("click", (e) => {
   modal2.close();
 });
-console.log(modal2.children);
 
 // flatpick function
 const currentTime = new Date();
@@ -113,13 +96,21 @@ imgInput.addEventListener("change", (e) => {
 eventForm.addEventListener("submit", (e) => {
   e.preventDefault();
   addEvent();
+  editEventBtn(); // 更改後的活動出現在編輯列表
 });
 
 function addEvent() {
   const eventObj = {
     type: eventType.selectedOptions[0].dataset.name,
     title: titleInput.value.trim(),
-    id: startDate.value + titleInput.value.trim(),
+    performer: performer.value.trim(),
+    get id() {
+      return (
+        this.startTime.date +
+        this.type[0].toUpperCase() +
+        this.performer.split(" ")[0]
+      );
+    },
     img: imgInput.src,
     location: locationInput.value.trim(),
     //month, day
@@ -138,15 +129,13 @@ function addEvent() {
     description: descriptionInput.value.trim(),
 
     //確認是否為一日活動
-    duration: function () {
+    get duration() {
       return this.startTime.date === this.endTime.date;
     },
   };
   allEvent.push(eventObj);
   localStorage.setItem("myEvent", JSON.stringify(allEvent));
-  editEventBtn();
   updateEventBox(); //main.append
-  editEventBtn(); // 更改後的活動出現在編輯列表
   eventForm.reset(); //表單送出後清空form;
 }
 
@@ -154,6 +143,17 @@ function updateEventBox() {
   mainSection.innerHTML = "";
   // 新增的event 出現在網頁上
   allEvent.forEach((eventObj) => {
+    const {
+      type,
+      title,
+      id,
+      img,
+      location,
+      startTime,
+      endTime,
+      description,
+      duration,
+    } = eventObj;
     const divEventBox = document.createElement("div");
     divEventBox.className = "event-box";
     divEventBox.setAttribute("id", "event-box");
@@ -164,22 +164,22 @@ function updateEventBox() {
     const divEventInfo = document.createElement("div");
     divEventInfo.className = "event-info";
 
-    divEventBox.setAttribute("value", `${eventObj.type}`); //checked
+    divEventBox.setAttribute("data-name", `${type}`); //checked
 
     divEventBox.innerHTML = `<div class="filter"></div><img class="event-image" src="${eventObj.img}" alt="${eventObj.title}" />`;
-    divPerformerInfo.innerHTML = `<p class="description hide">${eventObj.description}</p>`;
-    divEventDate.innerHTML = `<p class="month start" >${eventObj.startTime.month}</p>
-<p class="day start" id="event-start">${eventObj.startTime.day}</p>
-<p class="month end">${eventObj.endTime.month}</p>
-    <p class="day end">${eventObj.endTime.day}</p>`;
-    divEventInfo.innerHTML = `<p class="performer">${eventObj.title}</p>
+    divPerformerInfo.innerHTML = `<p class="description hide">${description}</p>`;
+    divEventDate.innerHTML = `<p class="month start" >${startTime.month}</p>
+<p class="day start" id="event-start">${startTime.day}</p>
+<p class="month end">${endTime.month}</p>
+    <p class="day end">${endTime.day}</p>`;
+    divEventInfo.innerHTML = `<p class="performance">${title}</p>
               <br />
-              <p class="location">${eventObj.location}</p>
+              <p class="location">${location}</p>
               <br />
-              <p class="time"><i class="fa-solid fa-clock"></i>    ${eventObj.startTime.time}-${eventObj.endTime.time}
+              <p class="time"><i class="fa-solid fa-clock"></i>    ${startTime.time}-${endTime.time}
               </p>`;
 
-    if (eventObj.startTime.date === eventObj.endTime.date) {
+    if (duration) {
       divEventDate.children[2].classList.add("hide");
       divEventDate.children[3].classList.add("hide");
     }
@@ -194,52 +194,85 @@ function updateEventBox() {
 function editEventBtn() {
   allEvent.forEach((eventObj) => {
     let editEventDiv = document.createElement("div");
+    editEventDiv.setAttribute("id", `${eventObj.id}`);
     editEventDiv.className = "edit-event-div";
-    let trashBtn = document.createElement("button");
-    trashBtn.className = "trashBtn";
-    trashBtn.innerHTML = `<i class="fa-solid fa-trash"></i>`;
+    let addTrashBtn = document.createElement("span");
+    addTrashBtn.className = "trashBtn";
+    addTrashBtn.innerHTML = `<i class="fa-solid fa-trash"></i>`;
     let eventBtn = document.createElement("button");
     eventBtn.className = "eventBtn";
     eventBtn.innerHTML = ` <i class="fa-solid fa-angles-right"></i>    ${eventObj.title}`;
+    eventBtn.id = eventObj.id;
     editEventDiv.append(eventBtn);
-    editEventDiv.append(trashBtn);
+    editEventDiv.append(addTrashBtn);
     editBox.append(editEventDiv);
 
-    //點開每個活動按鈕，出現編輯表格
     eventBtn.addEventListener("click", () => {
-      let editTitle = document.querySelector(".top > p");
+      console.log(eventBtn);
+    });
+
+    // 點開每個活動按鈕，出現編輯表格
+    eventBtn.addEventListener("click", () => {
+      const {
+        type,
+        title,
+        performer,
+        id,
+        img,
+        location,
+        startTime,
+        endTime,
+        description,
+        duration,
+      } = eventObj;
+      eventForm.reset();
+      const editTitle = document.querySelector(".top > p");
       closeBtn[1].innerText = "取消編輯";
       submitBtn.innerText = "編輯完成";
       editTitle.innerText = "編輯活動內容";
-      let formInput = eventForm.children;
-      let selectedOpts = formInput[1].children[0].children;
+      const formInput = eventForm.children;
+      const selectedOpts = formInput[1].children[0].children;
       for (let i in selectedOpts) {
-        if (selectedOpts[i].dataset.name === `${eventObj.type}`) {
+        if (selectedOpts[i].dataset.name === type) {
           selectedOpts[i].selected = true;
           break;
         }
       }
-      formInput[1].children[1].value = `${eventObj.title}`;
+      formInput[1].children[1].value = title;
+      formInput[2].children[0].value = performer;
 
       startDate._flatpickr.input.value =
-        `${eventObj.startTime.date}`.slice(0, 4) +
+        `${startTime.date}`.slice(0, 4) +
         "/" +
-        `${eventObj.startTime.date}`.slice(4, 6) +
+        `${startTime.date}`.slice(4, 6) +
         "/" +
-        `${eventObj.startTime.date}`.slice(6) +
-        ` ${eventObj.startTime.time}`;
+        `${startTime.date}`.slice(6) +
+        ` ${startTime.time}`;
       endDate._flatpickr.input.value =
-        `${eventObj.endTime.date}`.slice(0, 4) +
+        `${endTime.date}`.slice(0, 4) +
         "/" +
-        `${eventObj.endTime.date}`.slice(4, 6) +
+        `${endTime.date}`.slice(4, 6) +
         "/" +
-        `${eventObj.endTime.date}`.slice(6) +
-        ` ${eventObj.endTime.time}`;
-      formInput[4].children[0].value = `${eventObj.location}`;
-      formInput[5].children[0].value = `${eventObj.description}`;
+        `${endTime.date}`.slice(6) +
+        ` ${endTime.time}`;
+      formInput[5].children[0].value = location;
+      formInput[6].children[0].value = description;
       modal2.show();
     });
+
+    //刪除功能
+    addTrashBtn.addEventListener("click", deleteEvent);
   });
+}
+
+function deleteEvent(e) {
+  let trashBtn = this;
+  const EventArrIndex = allEvent.findIndex(
+    (eventObj) => eventObj.id === trashBtn.parentElement.id
+  );
+  trashBtn.parentElement.remove(); //重表單移除
+  allEvent.splice(EventArrIndex, 1);
+  localStorage.setItem("myEvent", JSON.stringify(allEvent));
 }
 
 closeBtn[1].addEventListener("click", (e) => {
@@ -257,8 +290,35 @@ const eventTitle = document.querySelectorAll(".performer");
 const day = document.querySelectorAll("day");
 const performerInfo = document.querySelectorAll(".description");
 
+console.log(eventBox);
+
+const filterBox = (e) => {
+  console.log(e.target.selectedOptions);
+
+  let selected = document.querySelector(".active");
+
+  selected.classList.remove("active");
+  e.target.selectedOptions[0].classList.add("active");
+
+  //---開始篩選---
+  eventBox.forEach((eventBox) => {
+    eventBox.classList.add("hide");
+    if (
+      eventBox.dataset.name === e.target.selectedOptions[0].id ||
+      e.target.selectedOptions[0].id === "all-type"
+    ) {
+      eventBox.classList.remove("hide");
+    }
+    console.log(eventBox.dataset.name, e.target.selectedOptions[0].id);
+  });
+};
+
+filterSelect.forEach((select) => select.addEventListener("change", filterBox));
+
 // 每個 eventBox 點開，都會觸發modal
-function clickBox(index) {
+function clickBox() {
+  const index = allEvent.findIndex((eventObj) => eventObj.id === eventBox.id);
+
   eventBox[index].addEventListener("click", () => {
     // eventStart[index * 2 + 1].innText;//始日
     modalBandName.innerHTML = eventTitle[index].innerHTML;
@@ -286,10 +346,10 @@ function clickBox(index) {
     modal.show();
   });
 }
-for (let i = 0; i < eventBox.length; i++) {
-  clickBox(i);
-}
+// for (let i = 0; i < eventBox.length; i++) {
+//   clickBox(i);
+// }
 
-closeBtn[1].addEventListener("click", () => {
+closeBtn[2].addEventListener("click", () => {
   modal.close();
 });
