@@ -75,48 +75,40 @@ body main {
   background-color: rgb(137, 43, 43);
   height: 100%;
   width: 100%;
-}
-body main h1 {
-  padding: 2rem 2rem 1rem 2rem;
-  font-size: 30px;
-  color: white;
-}
-body main .custom-select {
-  padding: 0 2rem 1rem 2rem;
-}
-body main .custom-select select {
-  padding: 10px;
-  font-size: 0.8rem;
-  background-color: rgb(137, 43, 43);
-  color: white;
-  border-color: rgba(128, 128, 128, 0.704);
-}
-body main .open-edit-box {
-  padding: 10px 20px 10px 10px;
-  font-size: 0.8rem;
-  background-color: rgb(137, 43, 43);
-  color: white;
-  border: 1px solid rgba(128, 128, 128, 0.704);
-}
-body main .open-edit-box:hover {
-  cursor: pointer;
-  background-color: #f2eee9;
-  color: rgb(137, 43, 43);
+  display: flex;
 }
 body main .edit-box[open] {
   border: none;
-  border-radius: 5px;
-  position: absolute;
-  top: 10%;
-  left: 50%;
+  position: relative;
+  height: 200vh;
+  width: 30vw;
   padding: 1rem;
   background-color: rgb(49, 47, 47);
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
   align-items: center;
-  width: 30%;
   z-index: 3;
+  transition: all 0.5s ease;
+}
+body main .edit-box[open] ~ .edit-right {
+  width: 70vw;
+}
+body main .edit-box[open] ~ .edit-right .event .event-info {
+  padding: 1rem;
+}
+body main .edit-box[open] ~ .edit-right .event .event-info p {
+  font-size: 0.8rem;
+}
+body main .edit-box[open] ~ .edit-right .event .event-info .location {
+  left: auto;
+  top: 77%;
+}
+body main .edit-box[open] ~ .edit-right .event .event-info .time {
+  width: 70%;
+  bottom: 1rem;
+  font-size: 13px;
+  padding: 0.3rem;
 }
 body main .edit-box[open] span {
   align-self: flex-start;
@@ -146,32 +138,214 @@ body main .edit-box[open] button:hover {
 }
 body main .edit-box[open] .add-event {
   width: 80%;
-  height: 10%;
+  height: 5%;
   font-size: 1rem;
-  padding: 20px 30px;
   margin-bottom: 20px;
 }
-body main .edit-box[open] .edit-event-div {
+body main .edit-box[open] .added {
   width: 80%;
+}
+body main .edit-box[open] .added .edit-event-div {
   display: flex;
   flex-wrap: nowrap;
-  text-align: center;
+  align-items: center;
+  width: 100%;
   margin-bottom: 10px;
 }
-body main .edit-box[open] .edit-event-div .eventBtn {
-  width: 90%;
+body main .edit-box[open] .added .edit-event-div .eventBtn {
+  width: 100%;
   padding: 20px;
 }
-body main .edit-box[open] .edit-event-div .trashBtn {
-  width: 10%;
+body main .edit-box[open] .added .edit-event-div .trashBtn {
+  align-self: center;
   border: none;
   font-size: 1.05rem;
+  padding: 5px 10px;
 }
-body main .edit-box[open] .edit-event-div .trashBtn:hover {
+body main .edit-box[open] .added .edit-event-div .trashBtn:hover {
   cursor: pointer;
   transform: scale(0.9);
   transition: 0.3s ease;
   background-color: rgb(49, 47, 47);
+}
+body main .edit-event-box[open] {
+  border: none;
+  justify-self: flex-start;
+  background-color: rgb(49, 47, 47);
+  height: 200%;
+  width: 29%;
+  position: absolute;
+  align-items: center;
+  z-index: 4;
+}
+body main .edit-event-box[open] select {
+  display: block;
+  background-color: rgb(49, 47, 47);
+  color: gray;
+  padding: 20px;
+  width: 90%;
+  border-radius: 5px;
+  margin: 2px 5% 20px 5%;
+  border: 1px solid gray;
+}
+body main .edit-event-box[open] select:not(:selected):valid {
+  background-color: #f2eee9;
+  color: rgb(49, 47, 47);
+}
+body main .edit-event-box[open] select .hide {
+  display: none;
+}
+body main .edit-event-box[open] form {
+  position: relative;
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: column;
+  justify-content: center;
+  background-color: rgb(49, 47, 47);
+  padding: 1rem;
+  width: 100%;
+}
+body main .edit-event-box[open] form p {
+  margin: 0 2rem;
+  text-align: center;
+  width: 50%;
+  color: #6ae680;
+}
+body main .edit-event-box[open] form .top {
+  position: relative;
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  align-items: center;
+}
+body main .edit-event-box[open] form .top button {
+  width: 15%;
+  height: 10%;
+  font-size: 0.8rem;
+  margin: 0.5rem;
+  font-weight: 400;
+  color: #6ae680;
+  background-color: rgb(49, 47, 47);
+  text-align: center;
+  border: none;
+  padding: 10px;
+}
+body main .edit-event-box[open] form .top button:hover {
+  cursor: pointer;
+  background-color: rgb(46, 44, 44);
+}
+body main .edit-event-box[open] input:not(.img-input) {
+  height: 25%;
+  width: 90%;
+  padding: 20px 10px 10px 10px;
+  margin: 2px 5% 20px 5%;
+  border: 1px solid gray;
+  border-radius: 5px;
+  background-color: rgb(49, 47, 47);
+  color: white;
+}
+body main .edit-event-box[open] input:not(.img-input):not(:focus):valid {
+  background-color: #f2eee9;
+  color: rgb(49, 47, 47);
+}
+body main .edit-event-box[open] input:not(.img-input):focus ~ .floating-label, body main .edit-event-box[open] input:not(.img-input):not(:focus):valid ~ .floating-label {
+  font-size: 10px;
+  padding-top: 5px;
+  opacity: 1;
+}
+body main .edit-event-box[open] .floating-label {
+  display: inline;
+  position: absolute;
+  left: 10%;
+  padding: 1rem;
+  transition: 0.2s ease all;
+  color: gray;
+  font-size: 15px;
+  pointer-events: none;
+  z-index: 1;
+}
+body main .edit-event-box[open] textarea {
+  border-radius: 5px;
+  padding: 22px;
+  margin: 2px 5% 25px 5%;
+  width: 90%;
+  background-color: rgb(49, 47, 47);
+  color: white;
+  z-index: -1;
+}
+body main .edit-event-box[open] textarea:not(:focus):valid {
+  background-color: #f2eee9;
+  color: rgb(49, 47, 47);
+}
+body main .edit-event-box[open] textarea:focus ~ .floating-label.text {
+  padding: 3px 60% 4px 1rem;
+  margin-top: 3px;
+  font-size: 12px;
+  opacity: 1;
+  border-radius: 5px 0px 5px 0;
+  background-color: rgb(49, 47, 47);
+  transition: 0.2s ease all;
+}
+body main .edit-event-box[open] textarea:not(:focus):valid ~ .floating-label.text {
+  padding: 3px 60% 3px 1rem;
+  margin-top: 3px;
+  font-size: 12px;
+  opacity: 1;
+  background-color: #f2eee9;
+  border-radius: 5px 0px 5px 0;
+  transition: 0.002s ease in;
+}
+body main .edit-event-box[open] .text {
+  left: 10%;
+  padding: 1rem;
+}
+body main .edit-event-box[open] .img-input-box {
+  height: 25%;
+  width: 90%;
+  padding: 10px;
+  margin: 2px 5% 25px 5%;
+  border-radius: 5px;
+  background-color: rgb(49, 47, 47);
+  color: gray;
+  font-size: 15px;
+  border: 1px solid gray;
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+}
+body main .edit-event-box[open] .img-input-box label {
+  flex: 2 1 auto;
+}
+body main .edit-event-box[open] .img-input-box .img-input {
+  flex: 1 1 auto;
+  width: 30%;
+}
+body main h1 {
+  padding: 2rem 2rem 1rem 2rem;
+  font-size: 30px;
+  color: white;
+}
+body main .custom-select {
+  padding: 0 2rem 1rem 2rem;
+}
+body main .custom-select select {
+  padding: 10px;
+  font-size: 0.8rem;
+  background-color: rgb(137, 43, 43);
+  color: white;
+  border-color: rgba(128, 128, 128, 0.704);
+}
+body main .open-edit-box {
+  padding: 10px 20px 10px 10px;
+  font-size: 0.8rem;
+  background-color: rgb(137, 43, 43);
+  color: white;
+  border: 1px solid rgba(128, 128, 128, 0.704);
+}
+body main .open-edit-box:hover {
+  cursor: pointer;
+  background-color: #f2eee9;
+  color: rgb(137, 43, 43);
 }
 body main .event {
   display: flex;
@@ -256,162 +430,6 @@ body main .event .event-info .time {
   position: absolute;
   bottom: 2rem;
 }
-body main .edit-event-box[open] {
-  background-color: rgba(0, 0, 0, 0.4);
-  border: 0;
-  height: 100%;
-  width: 50%;
-  position: fixed;
-  bottom: 0;
-  overflow: scroll;
-  display: flex;
-  align-items: center;
-}
-body main .edit-event-box[open] select {
-  display: block;
-  background-color: rgb(49, 47, 47);
-  color: gray;
-  padding: 20px;
-  width: 90%;
-  border-radius: 5px;
-  margin: 2px 5% 20px 5%;
-  border: 1px solid gray;
-}
-body main .edit-event-box[open] select:not(:selected):valid {
-  background-color: #f2eee9;
-  color: rgb(49, 47, 47);
-}
-body main .edit-event-box[open] form {
-  position: relative;
-  display: flex;
-  flex-wrap: nowrap;
-  flex-direction: column;
-  justify-content: center;
-  background-color: rgb(49, 47, 47);
-  padding: 1rem;
-  width: 70%;
-  border-radius: 15px;
-  left: 10%;
-  top: 5%;
-}
-body main .edit-event-box[open] form p {
-  margin: 0 2rem;
-  text-align: center;
-  width: 50%;
-  color: #6ae680;
-}
-body main .edit-event-box[open] form .top {
-  display: flex;
-  flex-wrap: nowrap;
-  flex-direction: row;
-  align-items: center;
-  top: -10%;
-  margin-bottom: 10px;
-}
-body main .edit-event-box[open] form .top button {
-  width: 20%;
-  height: 10%;
-  font-size: 0.8rem;
-  margin: 0 20px;
-  font-weight: 400;
-  color: #6ae680;
-  background-color: rgb(49, 47, 47);
-  text-align: center;
-  border: none;
-  padding: 10px;
-}
-body main .edit-event-box[open] form .top button:hover {
-  cursor: pointer;
-  background-color: rgb(46, 44, 44);
-}
-body main .edit-event-box[open] input:not(.img-input) {
-  height: 25%;
-  width: 90%;
-  padding: 20px 10px 10px 10px;
-  margin: 2px 5% 20px 5%;
-  border: 1px solid gray;
-  border-radius: 5px;
-  background-color: rgb(49, 47, 47);
-  color: white;
-}
-body main .edit-event-box[open] input:not(.img-input):not(:focus):valid {
-  background-color: #f2eee9;
-  color: rgb(49, 47, 47);
-}
-body main .edit-event-box[open] input:not(.img-input):focus ~ .floating-label, body main .edit-event-box[open] input:not(.img-input):not(:focus):valid ~ .floating-label {
-  font-size: 12px;
-  padding-top: 5px;
-  opacity: 1;
-}
-body main .edit-event-box[open] .floating-label {
-  display: inline;
-  position: absolute;
-  left: 10%;
-  padding: 1rem;
-  transition: 0.2s ease all;
-  color: gray;
-  font-size: 15px;
-  pointer-events: none;
-  z-index: 1;
-}
-body main .edit-event-box[open] textarea {
-  border-radius: 5px;
-  padding: 22px;
-  margin: 2px 5% 25px 5%;
-  width: 90%;
-  background-color: rgb(49, 47, 47);
-  color: white;
-  z-index: -1;
-}
-body main .edit-event-box[open] textarea:not(:focus):valid {
-  background-color: #f2eee9;
-  color: rgb(49, 47, 47);
-}
-body main .edit-event-box[open] textarea:focus ~ .floating-label.text {
-  padding: 3px 65% 4px 1.5rem;
-  margin-top: 3px;
-  left: 2.5rem;
-  font-size: 11px;
-  opacity: 1;
-  border-radius: 5px 0px 5px 0;
-  background-color: rgb(49, 47, 47);
-  transition: all 0.0001s ease-in;
-}
-body main .edit-event-box[open] textarea:not(:focus):valid ~ .floating-label.text {
-  padding: 3px 65% 3px 1.5rem;
-  margin-top: 3px;
-  left: 2.5rem;
-  font-size: 11px;
-  opacity: 1;
-  background-color: #f2eee9;
-  border-radius: 5px 0px 5px 0;
-  transition: all 0.0001s ease-in;
-}
-body main .edit-event-box[open] .text {
-  left: 5%;
-  padding: 1rem;
-}
-body main .edit-event-box[open] .img-input-box {
-  height: 25%;
-  width: 90%;
-  padding: 10px;
-  margin: 2px 5% 25px 5%;
-  border-radius: 5px;
-  background-color: rgb(49, 47, 47);
-  color: gray;
-  font-size: 15px;
-  border: 1px solid gray;
-  display: flex;
-  flex-wrap: nowrap;
-  flex-direction: row;
-}
-body main .edit-event-box[open] .img-input-box label {
-  flex: 2 1 auto;
-}
-body main .edit-event-box[open] .img-input-box .img-input {
-  flex: 1 1 auto;
-  width: 30%;
-}
 body .modal {
   background-color: rgba(0, 0, 0, 0.4);
   border: 0;
@@ -467,6 +485,7 @@ body .modal .modal-container #show-time .date {
 body .modal .modal-container #show-time .location {
   position: relative;
   bottom: -0.5rem;
+  width: 80%;
 }
 body .modal .modal-container #show-time .time {
   display: inline;
@@ -474,4 +493,17 @@ body .modal .modal-container #show-time .time {
 }
 body .modal .modal-container #show-time .hide {
   display: none;
+}
+body .modal .modal-container #show-time span {
+  float: right;
+  position: absolute;
+  top: 87%;
+  left: 80%;
+}
+body .modal .modal-container #show-time span .fa-solid {
+  font-size: 2rem;
+}
+body .modal .modal-container #show-time span .fa-solid:hover {
+  color: rgb(192, 192, 192);
+  cursor: pointer;
 }/*# sourceMappingURL=styles_activity.css.map */

@@ -43,14 +43,24 @@
       </nav>
     </header>
     <main>
+      <dialog class="edit-box" id="edit-box">
+        <span class="close-button">
+          <i class="fa-solid fa-x"></i>
+        </span>
+        <p>Events</p>
+        <button class="add-event" id="add-event">
+          <i class="fa-solid fa-plus"></i> Add Event
+        </button>
+        <div class ="added"></div>
+      </dialog>
+      <div class="edit-right">
       <h1>Upcoming Events</h1>
       <div class="custom-select">
         <select id="calender">
           <option>日期</option>
-
           <!-- Air datepicker Html element -->
         </select>
-        <select>
+        <select id="select-event-type">
           <option class="active">活動類型</option>
           <option id="all-type" data-name="all-type">全部</option>
           <option id="performance" data-name="performance">表演活動</option>
@@ -60,17 +70,10 @@
         </select>
         <button class="open-edit-box">編輯活動內容</button>
       </div>
-      <dialog class="edit-box" id="edit-box">
-        <span class="close-button">
-          <i class="fa-solid fa-x"></i>
-        </span>
-        <p>Events</p>
-        <button class="add-event" id="add-event">
-          <i class="fa-solid fa-plus"></i> Add Event
-        </button>
-      </dialog>
+      
        <div class="event" id="event">
         
+      </div>
       </div>
       <!-- Modal -->
       <dialog id="edit-event-box" class="edit-event-box">
@@ -83,30 +86,33 @@
           <div>
             <select id="event-type">
               <option class="active">活動類型</option>
-              <option id="all-type" data-name="all-type">全部</option>
               <option id="performance" data-name="performance">表演活動</option>
               <option id="exhibition" data-name="exhibition">藝術展覽</option>
               <option id="culture" data-name="culture">文化體驗</option>
               <option id="workshop" data-name="workshop">體驗工作坊</option>
             </select>
-            <input type="text" id="title-input"  />
+            <input type="text" id="title-input"  required/>
             <span class="floating-label">活動名稱</span>
           </div>
           <div>
-            <input id="startDate" class="dateSelector"  />
+            <input id="performer" class="performer"  required/>
+            <span class="floating-label">表演者/主辦單位</label>
+          </div>
+          <div>
+            <input id="startDate" class="dateSelector"  required/>
             <span class="floating-label">開始時間</label>
           </div>
           <div>
-            <input id="endDate" class="dateSelector" />
+            <input id="endDate" class="dateSelector" required/>
             <span class="floating-label">結束時間</label>
           </div>
           <div>
-            <input type="text" id="location-input"  />
+            <input type="text" id="location-input"  required/>
             <span class="floating-label">活動地點</span>
           </div>
           <div>
             <!-- <div class ="text-filter"></div> -->
-            <textarea rows="5" id="description-input" ></textarea>
+            <textarea rows="5" id="description-input" required></textarea>
             <span class="floating-label text" 
               >活動介紹</span
             >
