@@ -75,6 +75,8 @@ body main {
   background-color: rgb(137, 43, 43);
   height: 100%;
   width: 100%;
+}
+body main:has(.edit-box[open]) {
   display: flex;
 }
 body main .edit-box[open] {
@@ -90,6 +92,9 @@ body main .edit-box[open] {
   align-items: center;
   z-index: 3;
   transition: all 0.5s ease;
+}
+body main .edit-box[open]:has(main) {
+  display: flex;
 }
 body main .edit-box[open] ~ .edit-right {
   width: 70vw;
@@ -126,7 +131,7 @@ body main .edit-box[open] button {
   width: 70%;
   font-size: 0.8rem;
   font-weight: 400;
-  color: #6ae680;
+  color: #6f9cff;
   background-color: rgb(49, 47, 47);
   border: 1px solid gray;
   border-radius: 10px;
@@ -209,7 +214,7 @@ body main .edit-event-box[open] form p {
   margin: 0 2rem;
   text-align: center;
   width: 50%;
-  color: #6ae680;
+  color: #6f9cff;
 }
 body main .edit-event-box[open] form .top {
   position: relative;
@@ -224,7 +229,7 @@ body main .edit-event-box[open] form .top button {
   font-size: 0.8rem;
   margin: 0.5rem;
   font-weight: 400;
-  color: #6ae680;
+  color: #6f9cff;
   background-color: rgb(49, 47, 47);
   text-align: center;
   border: none;
@@ -320,6 +325,19 @@ body main .edit-event-box[open] .img-input-box .img-input {
   flex: 1 1 auto;
   width: 30%;
 }
+body main .edit-event-box[open] #img-container {
+  width: 90%;
+  height: 50%;
+  margin: 2px 5% 20px 5%;
+}
+body main .edit-event-box[open] #img-container img {
+  -o-object-fit: cover;
+     object-fit: cover;
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  display: none;
+}
 body main h1 {
   padding: 2rem 2rem 1rem 2rem;
   font-size: 30px;
@@ -329,18 +347,57 @@ body main .custom-select {
   padding: 0 2rem 1rem 2rem;
 }
 body main .custom-select select {
+  position: relative;
+  left: -1rem;
   padding: 10px;
   font-size: 0.8rem;
   background-color: rgb(137, 43, 43);
   color: white;
-  border-color: rgba(128, 128, 128, 0.704);
+  border: 1.5px solid rgba(128, 128, 128, 0.704);
+}
+body main .custom-select select:not(input):hover {
+  cursor: pointer;
+  background-color: #f2eee9;
+  color: rgb(137, 43, 43);
+}
+body main .custom-select .hide {
+  display: none;
+}
+body main .custom-select input {
+  padding: 10px;
+  font-size: 0.8rem;
+  position: relative;
+  color: white;
+  width: 8rem;
+  background-color: transparent;
+  z-index: 1;
+  border: 1.5px solid rgba(128, 128, 128, 0.704);
+}
+body main .custom-select input::-moz-placeholder {
+  color: white;
+}
+body main .custom-select input::placeholder {
+  color: white;
+}
+body main .custom-select input:hover {
+  cursor: pointer;
+}
+body main .custom-select i {
+  color: white;
+  position: relative;
+  left: -1.5rem;
+  font-size: 0.8rem;
+  z-index: 0;
 }
 body main .open-edit-box {
+  position: relative;
+  left: -1rem;
   padding: 10px 20px 10px 10px;
   font-size: 0.8rem;
   background-color: rgb(137, 43, 43);
   color: white;
-  border: 1px solid rgba(128, 128, 128, 0.704);
+  padding: 10px;
+  border: 1.5px solid rgba(128, 128, 128, 0.704);
 }
 body main .open-edit-box:hover {
   cursor: pointer;
@@ -361,7 +418,7 @@ body main .event .event-box {
   background-color: #f2eee9;
   border-radius: 15px;
   width: 20%;
-  max-height: 60%;
+  height: 70vh;
   margin: 2.5%;
   display: flex;
   flex-wrap: nowrap;
@@ -375,15 +432,19 @@ body main .event .event-box .filter {
   position: absolute;
   z-index: 1;
 }
-body main .event .event-box img {
+body main .event .event-box .div-image {
+  height: 60%;
   border-radius: 10px 10px 0 0;
-  position: relative;
+}
+body main .event .event-box .div-image img {
+  border-radius: 10px 10px 0 0;
   -o-object-fit: cover;
      object-fit: cover;
-  height: 50%;
+  width: 100%;
+  height: 100%;
 }
 body main .event .event-box .event-date {
-  width: 75px;
+  width: 30%;
   position: absolute;
   border-radius: 10px 0;
   background-color: #f2eee9;
@@ -408,13 +469,13 @@ body main .event .hide {
 body main .event .event-info {
   padding: 2rem;
   text-align: left;
-  height: 50%;
+  height: 40%;
 }
 body main .event .event-info .location {
   margin: -10px 0;
-  color: rgb(165, 164, 164);
+  color: rgb(130, 129, 129);
   font-size: 15px;
-  font-weight: 300;
+  font-weight: 400;
   position: absolute;
   bottom: 5rem;
   left: 2.5rem;
@@ -482,28 +543,51 @@ body .modal .modal-container #show-time .date {
   display: inline;
   padding: 20px 5px;
 }
-body .modal .modal-container #show-time .location {
-  position: relative;
-  bottom: -0.5rem;
-  width: 80%;
-}
 body .modal .modal-container #show-time .time {
-  display: inline;
   margin-top: 10px;
 }
 body .modal .modal-container #show-time .hide {
   display: none;
 }
-body .modal .modal-container #show-time span {
-  float: right;
+body .modal .modal-container #show-time .location {
+  position: relative;
+  width: 85%;
+  display: inline-block;
+}
+body .modal .modal-container #show-time input {
   position: absolute;
-  top: 87%;
-  left: 80%;
+  bottom: 1rem;
+  right: 1.8rem;
+  height: 2.5rem;
+  width: 2.5rem;
+  opacity: 0;
+  z-index: 1;
 }
-body .modal .modal-container #show-time span .fa-solid {
-  font-size: 2rem;
-}
-body .modal .modal-container #show-time span .fa-solid:hover {
-  color: rgb(192, 192, 192);
+body .modal .modal-container #show-time input:hover, body .modal .modal-container #show-time input:hover + label > .fa-feather {
   cursor: pointer;
+  color: #f1a99b;
+}
+body .modal .modal-container #show-time input:checked + label > .fa-feather {
+  color: #e85234;
+}
+body .modal .modal-container #show-time label {
+  position: relative;
+  width: 5rem;
+  float: inline-end;
+  text-align: center;
+  font-size: 0.75rem;
+  bottom: 3.5rem;
+  left: 1rem;
+}
+body .modal .modal-container #show-time label .fa-feather {
+  position: relative;
+  float: inline-end;
+  right: 1.5rem;
+  font-size: 1.25rem;
+  padding: 8px;
+  color: rgb(192, 192, 192);
+  background-color: #f2eee9;
+  border-radius: 45%;
+  border: 2px solid #f2eee9;
+  z-index: 0;
 }/*# sourceMappingURL=styles_activity.css.map */
