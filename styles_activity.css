@@ -177,7 +177,7 @@ body main .edit-event-box[open] {
   border: none;
   justify-self: flex-start;
   background-color: rgb(49, 47, 47);
-  height: 200%;
+  height: 200vh;
   width: 29%;
   position: absolute;
   align-items: center;

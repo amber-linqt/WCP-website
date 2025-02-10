@@ -1,0 +1,348 @@
+$themeColor: #f2eee9;
+$titleColor: #e85234;
+$buttonColor: #f1a99b;
+$dateColor: rgb(137, 43, 43);
+$formBColor: rgb(49, 47, 47);
+$formColor: #6f9cff;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: normal;
+}
+
+body {
+  background-color: $themeColor;
+  font-family: Poppins, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+
+  header {
+    nav {
+      display: flex;
+      justify-content: flex-end; // 水平對齊
+      align-items: center; // 垂直對齊
+      .logo {
+        display: flex;
+        margin-right: auto;
+        align-items: center;
+        width: 40%;
+        &:hover {
+          border: 0;
+        }
+        img {
+          height: 10vh;
+          flex-shrink: 1;
+        }
+        h1 {
+          flex-shrink: 4;
+        }
+      }
+      #sidebar-active {
+        display: none;
+      }
+      .open {
+        display: none;
+        padding: 0 30px;
+      }
+    }
+    .links-container {
+      margin-left: 0;
+      height: 100%;
+      width: 60%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-end;
+      .close {
+        display: none;
+        padding: 0 20px;
+      }
+      a {
+        height: 100%;
+        width: 100%;
+        padding: 30px 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        color: black;
+        &:hover {
+          background-color: $buttonColor;
+        }
+      }
+    }
+  }
+  main {
+    background-color: $dateColor;
+    width: 100%;
+    height: 200vh;
+    .top {
+      display: flex;
+      flex-wrap: wrap;
+      padding-top: 2rem;
+      margin: 0 0 2rem 2rem;
+      align-items: center;
+
+      .pic {
+        border-radius: 10%;
+        margin: 1rem;
+        width: 30vh;
+        height: 30vh;
+        object-fit: cover;
+        border: 2px solid rgba(128, 128, 128, 0.704);
+      }
+      .user-name {
+        font-size: 2rem;
+        color: $themeColor;
+      }
+    }
+    .bottom {
+      height: 60vh;
+      display: flex;
+      flex-direction: column;
+      padding: 1rem;
+      bottom: auto;
+      &:hover {
+        cursor: pointer;
+      }
+      .liked-tag {
+        width: 100%;
+        margin: 2.5% 2.5% 0.8% 2.5%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        text-decoration: none;
+        ul {
+          li {
+            display: inline;
+            border-radius: 10px 10px 0 0;
+            padding: 13px 10px;
+            background-color: $dateColor;
+            color: white;
+            border: 2px solid rgba(128, 128, 128, 0.704);
+
+            &:hover {
+              cursor: pointer;
+              background-color: $themeColor;
+              color: $dateColor;
+              border-bottom: $themeColor;
+            }
+          }
+          .active {
+            position: relative;
+            z-index: 1;
+            border-bottom: 2px solid $dateColor;
+          }
+        }
+      }
+      .liked-info {
+        position: relative;
+        z-index: 0;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        border-top: 2px solid rgba(128, 128, 128, 0.704);
+        background-color: $dateColor;
+        .event-box {
+          background-color: $themeColor;
+          border-radius: 15px;
+          border: 1.5px solid rgba(128, 128, 128, 0.704);
+
+          width: 20%;
+          height: 70vh;
+          margin: 2.5%;
+          display: flex;
+          flex-wrap: nowrap;
+          flex-direction: column;
+          position: relative;
+          z-index: 0;
+
+          .filter {
+            width: 100%;
+            min-height: 100%;
+            position: absolute;
+            z-index: 1;
+          }
+          .div-image {
+            height: 60%;
+            border-radius: 10px 10px 0 0;
+
+            img {
+              border-radius: 10px 10px 0 0;
+
+              object-fit: cover;
+              width: 100%;
+              height: 100%;
+            }
+          }
+
+          .event-date {
+            width: 30%;
+            position: absolute;
+            border-radius: 10px 0;
+            background-color: $themeColor;
+            padding: 5px 10px;
+            text-align: center;
+            p {
+              font-size: 0.75rem;
+              font-weight: 300;
+              color: $dateColor;
+            }
+            .day {
+              margin-top: -0.3rem;
+              font-size: 1.75rem;
+            }
+            .day.end {
+              font-size: 1rem;
+            }
+          }
+        }
+        .hide {
+          display: none;
+        }
+        .event-info {
+          padding: 2rem;
+          text-align: left;
+          height: 40%;
+          .location {
+            margin: -10px 0;
+            color: rgb(130, 129, 129);
+            font-size: 15px;
+            font-weight: 400;
+            position: absolute;
+            bottom: 5rem;
+            left: 2.5rem;
+          }
+          .time {
+            background-color: rgba(183, 183, 183, 0.819);
+            border-radius: 15px;
+            padding: 0.5rem;
+            line-height: 1rem;
+            width: 50%;
+            font-size: 15px;
+            font-weight: 300;
+            position: absolute;
+            bottom: 2rem;
+          }
+        }
+      }
+    }
+  }
+  .modal {
+    background-color: rgba(0, 0, 0, 0.4);
+    border: 0;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    bottom: 0;
+    overflow: scroll;
+
+    .modal-container {
+      position: relative;
+      width: 40%;
+      background-color: $themeColor;
+      border-radius: 15px;
+      margin: 2rem 1rem;
+      left: 30%;
+
+      #band-name {
+        padding: 1.5rem;
+        text-align: center;
+        font-size: 2rem;
+      }
+      span {
+        float: right;
+        .fa-solid {
+          padding: 0.5rem;
+          margin: 20px;
+          cursor: pointer;
+
+          &:hover {
+            color: rgb(192, 192, 192);
+          }
+        }
+      }
+      img {
+        width: 100%;
+        align-self: center;
+      }
+      #performer-info {
+        padding: 1rem;
+        background-color: whitesmoke;
+      }
+      p {
+        padding: 10px;
+      }
+
+      #show-time {
+        background-color: rgba(128, 128, 128, 0.15);
+        padding: 20px;
+        .date {
+          display: inline;
+          padding: 20px 5px;
+        }
+
+        .time {
+          margin-top: 10px;
+        }
+        .hide {
+          display: none;
+        }
+        .location {
+          position: relative;
+          width: 85%;
+          display: inline-block;
+        }
+        input {
+          position: absolute;
+          bottom: 1rem;
+          right: 1.8rem;
+          height: 2.5rem;
+          width: 2.5rem;
+          opacity: 0;
+          z-index: 1;
+
+          &:hover,
+          &:hover + label > .fa-feather {
+            cursor: pointer;
+            color: $buttonColor;
+          }
+
+          &:checked + label > .fa-feather {
+            color: $titleColor;
+          }
+        }
+        label {
+          position: relative;
+          width: 5rem;
+          float: inline-end;
+          text-align: center;
+          font-size: 0.75rem;
+          bottom: 3.5rem;
+          left: 1rem;
+
+          .fa-feather {
+            position: relative;
+            float: inline-end;
+            right: 1.5rem;
+            font-size: 1.25rem;
+            padding: 8px;
+            color: rgb(192, 192, 192);
+            background-color: $themeColor;
+            border-radius: 45%;
+            border: 2px solid $themeColor;
+            z-index: 0;
+          }
+        }
+      }
+    }
+  }
+}

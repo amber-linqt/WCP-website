@@ -466,6 +466,7 @@ function clickBox(e) {
   if (startDate === endDate) {
     modalShowInfo.children[1].classList.add("hide");
   }
+
   modal.show();
 }
 
@@ -533,22 +534,68 @@ eventModalBox.addEventListener("click", (e) => {
   const likedInfo = document.getElementById("liked-event");
   const likedIndex = likedList.indexOf(likedInfo.value);
 
-  console.log(eventModalBox.parentElement);
-
   if (e.target.id === "liked-event") {
     likedEvent(likedInfo, likedIndex);
   }
 });
 
+//加入我的行事曆
 function likedEvent(likedInfo, likedIndex) {
+  // const dataindex = allEvent.findIndex((event) => event.id === likedInfo.value);
+
   if (likedInfo.checked === true && likedIndex === -1) {
     likedInfo.setAttribute("checked", "");
     likedList.push(likedInfo.value);
+    // likedList.push(allEvent[dataindex]);
   } else {
     likedInfo.removeAttribute("checked", "");
     likedList.splice(likedIndex, 1);
   }
-
-  localStorage.setItem("myList", likedList);
+  likedList = mergeSortNum(likedList);
+  // localStorage.setItem("myList", JSON.stringify(likedList)); //連同event-info儲存
+  localStorage.setItem("myList", JSON.stringify(likedList)); //只儲存event-id
 }
-//點擊feather btn
+//liked event 排序
+function mergeNum(a, b) {
+  let result = [];
+  let i = 0;
+  let j = 0;
+
+  while (i < a.length && j < b.length) {
+    if (a[i] < b[j]) {
+      // console.log(a[i], a);
+
+      result.push(a[i]);
+      i++;
+    } else {
+      // console.log(b[j], b);
+
+      result.push(b[j]);
+      j++;
+    }
+  }
+
+  while (i < a.length) {
+    result.push(a[i]);
+    i++;
+  }
+  while (j < b.length) {
+    result.push(b[j]);
+    j++;
+  }
+  return result;
+}
+function mergeSortNum(arr) {
+  if (arr.length === 0) {
+    return;
+  }
+
+  if (arr.length === 1) {
+    return arr;
+  } else {
+    let middle = Math.floor(arr.length / 2);
+    let left = arr.slice(0, middle);
+    let right = arr.slice(middle, arr.length);
+    return mergeNum(mergeSortNum(left), mergeSortNum(right));
+  }
+}
