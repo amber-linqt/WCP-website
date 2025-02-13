@@ -30,14 +30,21 @@ const modalImg = document.querySelector("#img1");
 const modalBandName = document.querySelector("#band-name");
 const modalperformerInfo = document.querySelector("#performer-info");
 const modalShowInfo = document.querySelector("#show-time");
-const modal2 = document.querySelector("#edit-event-box");
+const showDStart = document.querySelector(".start");
+const showDEnd = document.querySelector(".end");
+const showTime = document.querySelector(".time");
+const showLocate = document.querySelector(".location");
+const likedInfo = document.getElementById("liked-event");
+const likedIcon = document.querySelector(".saved > span");
 
+const modal2 = document.querySelector("#edit-event-box");
 let allEvent = JSON.parse(localStorage.getItem("myEvent")) || [];
+let likedList = JSON.parse(localStorage.getItem("myList")) || [];
 
 updateEventBox();
 newEventBtn();
 let currentTask = {};
-let likedList = [];
+
 //活動編輯器
 openEditBoxBtn.addEventListener("click", () => {
   editBox.show();
@@ -452,21 +459,26 @@ function clickBox(e) {
 
   modalperformerInfo.innerHTML = eventInfo.innerHTML;
   modalperformerInfo.classList.remove("hide");
-  modalShowInfo.innerHTML = `<p class="date start">${startDate}</p><p class="date end" >- ${endDate}</p><p class="time">${time.innerHTML} </p><p class="location"><i class="fa-solid fa-location-dot"></i> ${eventLocation.innerHTML}</p><input type="checkbox" id="liked-event" ><label class="saved">加入行事曆<i class="fa-solid fa-feather"></i></label>`;
-  const likedInfo = document.getElementById("liked-event");
+  showDStart.innerHTML = ` ${startDate}`;
+  showDEnd.innerHTML = `- ${endDate}`;
+  showTime.innerHTML = time.innerHTML;
+  showLocate.innerHTML =
+    `<i class="fa-solid fa-location-dot"></i> ` + eventLocation.innerHTML;
   likedInfo.setAttribute("value", `${eventId}`);
-
   //檢視是否為liked event
+
   const EventArrIndex = likedList.findIndex((item) => item === likedInfo.value);
 
+  //checked
   if (EventArrIndex !== -1) {
-    likedInfo.setAttribute("checked", "");
+    likedInfo.checked = true;
+  } else {
+    likedInfo.checked = false;
   }
 
   if (startDate === endDate) {
     modalShowInfo.children[1].classList.add("hide");
   }
-
   modal.show();
 }
 
@@ -527,11 +539,10 @@ function mergeSort(arr) {
   }
 }
 
-//加入行事曆
+//加入我的活動
 const eventModalBox = document.querySelector(".modal-container");
 
 eventModalBox.addEventListener("click", (e) => {
-  const likedInfo = document.getElementById("liked-event");
   const likedIndex = likedList.indexOf(likedInfo.value);
 
   if (e.target.id === "liked-event") {
@@ -539,21 +550,27 @@ eventModalBox.addEventListener("click", (e) => {
   }
 });
 
-//加入我的行事曆
+//儲存活動
 function likedEvent(likedInfo, likedIndex) {
   // const dataindex = allEvent.findIndex((event) => event.id === likedInfo.value);
 
   if (likedInfo.checked === true && likedIndex === -1) {
     likedInfo.setAttribute("checked", "");
     likedList.push(likedInfo.value);
-    // likedList.push(allEvent[dataindex]);
+    likedIcon.innerText = "取消喜歡";
   } else {
-    likedInfo.removeAttribute("checked", "");
+    likedInfo.removeAttribute("checked");
     likedList.splice(likedIndex, 1);
+    likedIcon.innerText = "喜歡活動";
   }
-  likedList = mergeSortNum(likedList);
-  // localStorage.setItem("myList", JSON.stringify(likedList)); //連同event-info儲存
-  localStorage.setItem("myList", JSON.stringify(likedList)); //只儲存event-id
+
+  // // localStorage.setItem("myList", JSON.stringify(likedList)); //連同event-info儲存
+  if (likedList.length > 0) {
+    likedList = mergeSortNum(likedList);
+    localStorage.setItem("myList", JSON.stringify(likedList)); //只儲存event-id
+  } else {
+    localStorage.removeItem("myList");
+  }
 }
 //liked event 排序
 function mergeNum(a, b) {

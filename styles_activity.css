@@ -540,8 +540,12 @@ body .modal .modal-container #show-time {
   padding: 20px;
 }
 body .modal .modal-container #show-time .date {
+  font-size: 1.25rem;
   display: inline;
-  padding: 20px 5px;
+  padding: 20px 0;
+}
+body .modal .modal-container #show-time .start {
+  padding-left: 0.5rem;
 }
 body .modal .modal-container #show-time .time {
   margin-top: 10px;
@@ -566,9 +570,21 @@ body .modal .modal-container #show-time input {
 body .modal .modal-container #show-time input:hover, body .modal .modal-container #show-time input:hover + label > .fa-feather {
   cursor: pointer;
   color: #f1a99b;
+  transform: scale(1.05);
 }
 body .modal .modal-container #show-time input:checked + label > .fa-feather {
   color: #e85234;
+}
+body .modal .modal-container #show-time input:hover + label > span {
+  position: absolute;
+  display: block;
+  background-color: rgba(141, 140, 140, 0.574);
+  border-radius: 10px;
+  padding: 7px 10px;
+  margin: -1rem 10px 5px 0;
+}
+body .modal .modal-container #show-time input:active + label > .fa-feather {
+  transform: scale(1.2);
 }
 body .modal .modal-container #show-time label {
   position: relative;
@@ -579,15 +595,17 @@ body .modal .modal-container #show-time label {
   bottom: 3.5rem;
   left: 1rem;
 }
+body .modal .modal-container #show-time label span {
+  display: none;
+}
 body .modal .modal-container #show-time label .fa-feather {
   position: relative;
   float: inline-end;
-  right: 1.5rem;
+  right: 1.75rem;
   font-size: 1.25rem;
   padding: 8px;
   color: rgb(192, 192, 192);
-  background-color: #f2eee9;
   border-radius: 45%;
-  border: 2px solid #f2eee9;
   z-index: 0;
+  top: 20px;
 }/*# sourceMappingURL=styles_activity.css.map */

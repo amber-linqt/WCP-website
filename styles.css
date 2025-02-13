@@ -109,6 +109,10 @@ main .image-1 .overlay-text h3 {
 }
 main .category {
   display: flexbox;
+  scroll-snap-type: y mandatory;
+}
+main .category div {
+  scroll-snap-align: center;
 }
 main .category .category-title {
   margin-top: 1rem;

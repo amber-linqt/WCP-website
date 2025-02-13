@@ -118,6 +118,11 @@ main {
 
   .category {
     display: flexbox;
+    scroll-snap-type: y mandatory;
+
+    div {
+      scroll-snap-align: center;
+    }
     .category-title {
       margin-top: 1rem;
       height: 20vh;

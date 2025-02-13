@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>What's coming up | 我的活動</title>
+    <meta name="author" content="Amber Lin" />
+    <script
+      src="https://kit.fontawesome.com/839c1e07aa.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <link rel="icon" src="./image/logo.svg" />
+    <link rel="stylesheet" href="./styles_mypage.css" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <div class="logo">
+          <a href="#"><img src="./image/logo.svg" alt="WCP_logo" /></a>
+          <h1>What's coming up</h1>
+        </div>
+        <input type="checkbox" id="sidebar-active" />
+        <label for="sidebar-active" class="open">
+          <i class="fa-solid fa-bars fa-lg"></i>
+        </label>
+        <label for="sidebar-active" id="overlay"></label>
+        <div class="links-container">
+          <label for="sidebar-active" class="close"
+            ><i class="fa-solid fa-x"></i>
+          </label>
+
+          <a href="homepage.html">關於WCP</a>
+          <a href="activity.html">找活動</a>
+          <a href="login.html">會員登入</a>
+          <a href="#">我的頁面</a>
+          <a href="contactus.html">聯絡我們</a>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <div class="top">
+        <img class="profile pic" src="./image/profile_pic.jpg" />
+        <p class="profile user-name">Amber Lin</p>
+      </div>
+      <div class="bottom">
+        <div class="liked-tag">
+          <ul class="tag">
+            <li class="liked-event active">喜歡的活動</li>
+            <li class="liked-company">追蹤的主辦單位</li>
+          </ul>
+        </div>
+        <div class="liked-info">
+          <button class="event-btn"></button>
+        </div>
+      </div>
+      <dialog id="modal" class="modal">
+        <div class="modal-container">
+          <span class="close-button">
+            <i class="fa-solid fa-x"></i>
+          </span>
+          <div id="band-name"></div>
+          <img id="img1" />
+          <div id="performer-info"></div>
+          <div id="show-time">
+            <p class="date start"></p>
+            <p class="date end"></p>
+            <p class="time"></p>
+            <p class="location"></p>
+            <input type="checkbox" id="liked-event" />
+            <label class="saved"
+              ><span>喜歡活動</span><i class="fa-solid fa-feather"></i
+            ></label>
+          </div>
+        </div>
+      </dialog>
+    </main>
+    <script src="./app_mypage.js"></script>
+  </body>
+</html>
