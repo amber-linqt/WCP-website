@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>What's coming up | 會員登入</title>
+    <meta name="author" content="Amber Lin" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+      rel="stylesheet"
+    />
+    <script
+      src="https://kit.fontawesome.com/839c1e07aa.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="../public/css/login.css" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <div class="logo">
+          <a href="#"><img src="../public/image/logo.svg" alt="WCP_logo" /></a>
+          <h1>What's coming up</h1>
+        </div>
+        <input type="checkbox" id="sidebar-active" />
+        <label for="sidebar-active" class="open">
+          <i class="fa-solid fa-bars fa-lg"></i>
+        </label>
+        <label for="sidebar-active" id="overlay"></label>
+        <div class="links-container">
+          <label for="sidebar-active" class="close"
+            ><i class="fa-solid fa-x"></i>
+          </label>
+
+          <a href="./homepage.html">關於WCP</a>
+          <a href="./activity.html">找活動</a>
+          <a href="#">會員登入</a>
+          <a href="./mypage.html">我的頁面</a>
+          <a href="./contactus.html">聯絡我們</a>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <div class="left">
+        <p>Welcome Back!</p>
+        <div class="img-box">
+          <img src="../public/image/login/2.png" alt="dinner" />
+        </div>
+      </div>
+
+      <div class="right">
+        <div class="switch-btn">
+        <button class="switch log-in active">會員登入</button>
+        <button class="switch sign-up">註冊會員</button>
+      </div>
+        <div class="member-form" id="log-in">
+          <form>
+            <input
+              name="username"
+              type="email"
+              placeholder="   &#xf007;   Email Account"
+              style="font-family: Arial, FontAwesome"
+            />
+            <input
+              name="password"
+              type="password"
+              placeholder="   &#xf023;   Password"
+              style="font-family: Arial, FontAwesome"
+            />
+          </form>
+          <div class="social-media-logo">
+            <p>以其他方式登入</p>
+
+            <i class="fa-brands fa-facebook"></i>
+            <i class="fa-brands fa-google"></i>
+            <i class="fa-brands fa-apple"></i>
+          </div>
+          <button class="down-button" type="submit">登入</button>
+        </div>
+        <div class="new-member hide" id="sign-up">
+          <form>
+            <input
+            name="username"
+            type="text"
+            placeholder="  Name"
+          />
+           <input
+              name="account"
+              type="email"
+              placeholder="  Email"
+            />
+            <input
+              name="password"
+              type="password"
+              placeholder="  Password"
+            />
+          </form>
+          <div class="social-media-logo">
+            <p>以其他方式註冊</p>
+
+            <i class="fa-brands fa-facebook"></i>
+            <i class="fa-brands fa-google"></i>
+            <i class="fa-brands fa-apple"></i>
+          </div>
+          <button class="submit-button" type="submit">註冊</button>
+        </div>
+    </main>
+
+    <script src="../public/js/login.js"></script>
+  </body>
+</html>
