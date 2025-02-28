@@ -14,11 +14,9 @@ const imgInput = document.getElementById("img-input");
 const previewImg = document.querySelector("#uploadedImage");
 
 //日期
-const formDateSelector = document.querySelectorAll(".form-dateSelector");
-
-const calender = document.querySelector(".filter-dateSelector");
 // event filter，選取filter 和 event-box
 const filterSelect = document.querySelector(".custom-select");
+const calender = document.getElementById("calender");
 
 const openEditBoxBtn = document.querySelector(".open-edit-box");
 const editBox = document.querySelector("#edit-box");
@@ -38,11 +36,88 @@ const likedInfo = document.getElementById("liked-event");
 const likedIcon = document.querySelector(".saved > span");
 
 const modal2 = document.querySelector("#edit-event-box");
-let allEvent = JSON.parse(localStorage.getItem("myEvent")) || [];
-let likedList = JSON.parse(localStorage.getItem("myList")) || [];
+let allEvent = [];
 
-updateEventBox();
-newEventBtn();
+async function getAllEvent() {
+  try {
+    const response = await fetch("http://localhost:3000/all-events");
+    const data = await response.json();
+    allEvent = data;
+    console.log(allEvent);
+  } catch (err) {
+    console.error('message: "OH NO!"');
+  }
+}
+async function fetchAndLogEvents() {
+  await getAllEvent(); // Await the result of getAllEvent()
+  console.log("Fetched events:", allEvent); // Now you get the actual array
+
+  updateEventBox();
+  newEventBtn();
+}
+
+fetchAndLogEvents();
+
+// flatpick function
+const currentTime = new Date();
+
+document.addEventListener("DOMContentLoaded", () => {
+  let selectedDate = null;
+
+  const formDate = {
+    dateFormat: "Y/m/d H:i", //時間格式
+    enableTime: true,
+    time_24hr: true, //24 時制
+    minuteIncrement: 15, //分鐘每次選擇間隔單位
+    allowInput: true, //可輸入控制
+    minDate: new Date().setMonth(new Date().getMonth() - 3),
+    maxDate: new Date().setMonth(new Date().getMonth() + 6), //可選最大時間，從今天起一個月,
+    // onClose: function (selectedDates, dateStr, instance) {
+    //   checkDateTime(dateStr, instance.input.id);
+    // },
+  };
+  const filterDate = {
+    dateFormat: "F Y", //時間格式
+    allowInput: true, //可輸入控制
+    minDate: new Date().setMonth(new Date().getMonth() - 7),
+    maxDate: new Date().setMonth(new Date().getMonth() + 12), //可選最大時間，從今天起一個月,
+    // onClose: function (selectedDates, dateStr, instance) {
+    //   checkDateTime(dateStr, instance.input.id);
+    // },
+    plugins: [
+      new monthSelectPlugin({
+        shorthand: true, //defaults to false
+        altFormat: "F Y", //defaults to "F Y"
+        theme: "dark", // defaults to "light"
+      }),
+    ],
+  };
+
+  // flatpickr(formDateSelector, formDate);
+  // flatpickr(calender, filterDate);
+  if (calender) {
+    flatpickr(calender, filterDate);
+  } else {
+    console.error("錯誤：找不到 #calender");
+  }
+
+  if (startDate) {
+    flatpickr(startDate, formDate);
+  } else {
+    console.error("錯誤：找不到 #startDate");
+  }
+
+  if (endDate) {
+    flatpickr(endDate, formDate);
+  } else {
+    console.error("錯誤：找不到 #endDate");
+  }
+});
+
+//存在 localStorage
+// let allEvent = JSON.parse(localStorage.getItem("myEvent")) || [];
+// let likedList = JSON.parse(localStorage.getItem("myList")) || [];
+
 let currentTask = {};
 
 //活動編輯器
@@ -63,60 +138,77 @@ addBtn.addEventListener("click", (e) => {
 closeBtn[1].addEventListener("click", (e) => {
   modal2.close();
 });
+submitBtn.addEventListener("submit", () => {
+  addOrUppdateEvent();
+});
+mainSection.addEventListener("click", (e) => {
+  if ((e.target.parentElement.className = "eventBox")) {
+    modal.show();
+  }
+});
 
-// flatpick function
-const currentTime = new Date();
+//壓縮圖片
+function compressImg(file, callback) {
+  const reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onload = (e) => {
+    const img = new Image();
+    img.src = e.target.result;
 
-formDate = {
-  dateFormat: "Y/m/d H:i", //時間格式
-  enableTime: true,
-  time_24hr: true, //24 時制
-  minuteIncrement: 15, //分鐘每次選擇間隔單位
-  allowInput: true, //可輸入控制
-  minDate: currentTime.setMonth(currentTime.getMonth() - 3),
-  maxDate: currentTime.setMonth(currentTime.getMonth() + 6), //可選最大時間，從今天起一個月,
-  // onClose: function (selectedDates, dateStr, instance) {
-  //   checkDateTime(dateStr, instance.input.id);
-  // },
-};
-filterDate = {
-  dateFormat: "F Y", //時間格式
-  allowInput: true, //可輸入控制
-  minDate: currentTime.setMonth(currentTime.getMonth() - 7),
-  maxDate: currentTime.setMonth(currentTime.getMonth() + 12), //可選最大時間，從今天起一個月,
-  // onClose: function (selectedDates, dateStr, instance) {
-  //   checkDateTime(dateStr, instance.input.id);
-  // },
-  plugins: [
-    new monthSelectPlugin({
-      shorthand: true, //defaults to false
-      altFormat: "F Y", //defaults to "F Y"
-      theme: "dark", // defaults to "light"
-    }),
-  ],
-};
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
 
-flatpickr(formDateSelector, formDate);
-flatpickr(calender, filterDate);
+      // 設定縮小的寬度和高度
+      const maxWidth = 800;
+      const maxHeight = 800;
+      let width = img.width;
+      let height = img.height;
+
+      if (width > maxWidth || height > maxHeight) {
+        const scale = Math.min(maxWidth / width, maxHeight / height);
+        width *= scale;
+        height *= scale;
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+      ctx.drawImage(img, 0, 0, width, height);
+
+      // 轉成 Base64 (壓縮品質 0.7)
+      const compressedBase64 = canvas.toDataURL("image/jpeg", 0.7);
+      callback(compressedBase64);
+    };
+  };
+}
 
 imgInput.addEventListener("change", (e) => {
   const newImg = e.target.files[0];
-  if (newImg && newImg.type.startsWith("image/")) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      imgInput.src = e.target.result;
-      previewImg.src = imgInput.src;
-      previewImg.style.display = "block";
-    };
 
-    reader.readAsDataURL(newImg);
+  if (newImg && newImg.type.startsWith("image/")) {
+    compressImg(newImg, (compressedBase64) => {
+      previewImg.src = compressedBase64; // 預覽圖片
+      imgInput.src = `../public/image/${newImg.name}`;
+      previewImg.style.display = "block";
+
+      console.log("壓縮後的圖片:", imgInput.src); // 儲存到 MySQL
+    });
+    // const reader = new FileReader();
+    // reader.onload = (e) => {
+    //   imgInput.src = e.target.result;
+    //   previewImg.src = imgInput.src;
+    //   previewImg.style.display = "block";
+    // };
+
+    // reader.readAsDataURL(newImg);
   } else {
     console.log("請提供有效的圖檔");
     previewImg.style.display = "none";
   }
 });
 
-function addOrUppdateEvent() {
+async function addOrUppdateEvent() {
+  await getAllEvent();
   const EventArrIndex = allEvent.findIndex(
     (item) => item.id === currentTask.id
   );
@@ -183,13 +275,27 @@ function addOrUppdateEvent() {
     modal2.close();
   }
 
-  localStorage.setItem("myEvent", JSON.stringify(allEvent));
+  // localStorage.setItem("myEvent", JSON.stringify(allEvent));
+  //發送資料 backend
+  const response = await fetch("http://localhost:3000/all-events", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(eventObj),
+  });
+  const result = await response.json();
+  alert(result.message);
+  console.log(allEvent);
+
   allEvent = mergeSort(allEvent);
   updateEventBox(); //main.append
   eventForm.reset(); //表單送出後清空form;
 }
 
 function updateEventBox() {
+  console.log(allEvent);
+
   allEvent = mergeSort(allEvent);
 
   mainSection.innerHTML = "";
@@ -352,145 +458,10 @@ function deleteEvent(e) {
 
   trashBtn.parentElement.remove(); //重表單移除
   allEvent.splice(EventArrIndex, 1);
+
   localStorage.setItem("myEvent", JSON.stringify(allEvent));
   updateEventBox();
 }
-
-closeBtn[1].addEventListener("click", (e) => {
-  modal2.close();
-});
-
-const eventBox = document.querySelectorAll(".event-box");
-
-const dayFilter = (e) => {
-  let selectedYear = calender._flatpickr.latestSelectedDateObj.getUTCFullYear();
-  let selectedMonth = (calender._flatpickr.latestSelectedDateObj.getMonth() + 1)
-    .toString()
-    .padStart(2, 0);
-
-  if (selectedMonth === "01") {
-    selectedYear += 1;
-  }
-  selectedYear.toString();
-
-  eventBox.forEach((eventBox) => {
-    let eventSYM = eventBox.id.slice(0, 6);
-    let eventEYM = eventBox.id.slice(9, 15);
-
-    eventBox.classList.add("hide");
-    //篩選當月當日及多日活動
-    if (
-      eventSYM === selectedYear + selectedMonth || //當日活動
-      (eventBox.children[2].children[2].classList.length !== 3 && // 多日活動
-        eventSYM <= selectedYear + selectedMonth &&
-        eventEYM >= selectedYear + selectedMonth)
-    ) {
-      eventBox.classList.remove("hide");
-    }
-  });
-};
-
-const filterBox = (e) => {
-  let selected = document.querySelector(".active");
-
-  selected.classList.remove("active");
-  e.target.selectedOptions[0].classList.add("active");
-
-  //---開始篩選---
-  eventBox.forEach((eventBox) => {
-    eventBox.classList.add("hide");
-    if (
-      eventBox.dataset.name === e.target.selectedOptions[0].id ||
-      e.target.selectedOptions[0].id === "all-type"
-    ) {
-      eventBox.classList.remove("hide");
-    }
-  });
-};
-
-calender.addEventListener("change", dayFilter);
-
-let selectOpts = filterSelect.children[2];
-selectOpts.addEventListener("change", (e) => {
-  selectOpts.children[0].classList.add("hide");
-  filterBox(e);
-});
-
-// 每個 eventBox 點開，都會觸發modal
-
-mainSection.addEventListener("click", (e) => {
-  if (e.target.parentElement.classList.value === "event-box") {
-    clickBox(e);
-  }
-});
-
-function clickBox(e) {
-  let clickedBox = e.target.parentElement;
-
-  let clicked = {
-    eventId: clickedBox.id,
-    eventTitle: clickedBox.children[4].children[0],
-    eventImg: clickedBox.children[1].children[0],
-    eventInfo: clickedBox.children[3].children[0],
-    startDate:
-      clickedBox.children[2].children[0].innerText +
-      clickedBox.children[2].children[1].innerText +
-      "日",
-    endDate:
-      clickedBox.children[2].children[2].innerText +
-      clickedBox.children[2].children[3].innerText +
-      "日",
-    eventLocation: clickedBox.children[4].children[2],
-    time: clickedBox.children[4].children[4],
-  };
-  let {
-    eventId,
-    eventTitle,
-    eventImg,
-    eventInfo,
-    startDate,
-    endDate,
-    eventLocation,
-    time,
-  } = clicked;
-
-  modalBandName.innerHTML = eventTitle.innerHTML;
-  modalImg.src = eventImg.src;
-
-  modalperformerInfo.innerHTML = eventInfo.innerHTML;
-  modalperformerInfo.classList.remove("hide");
-  showDStart.innerHTML = ` ${startDate}`;
-  showDEnd.innerHTML = `- ${endDate}`;
-  showTime.innerHTML = time.innerHTML;
-  showLocate.innerHTML =
-    `<i class="fa-solid fa-location-dot"></i> ` + eventLocation.innerHTML;
-  likedInfo.setAttribute("value", `${eventId}`);
-  //檢視是否為liked event
-
-  const EventArrIndex = likedList.findIndex((item) => item === likedInfo.value);
-
-  //checked
-  if (EventArrIndex !== -1) {
-    likedInfo.checked = true;
-  } else {
-    likedInfo.checked = false;
-  }
-
-  if (startDate === endDate) {
-    modalShowInfo.children[1].classList.add("hide");
-  }
-  modal.show();
-}
-
-closeBtn[2].addEventListener("click", () => {
-  modal.close();
-});
-
-eventForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-  addOrUppdateEvent();
-  newEventBtn(); // 更改後的活動出現在編輯列表
-});
 
 // 活動依照開始日排序
 function merge(a, b) {
@@ -540,15 +511,15 @@ function mergeSort(arr) {
 }
 
 //加入我的活動
-const eventModalBox = document.querySelector(".modal-container");
+// const eventModalBox = document.querySelector(".modal-container");
 
-eventModalBox.addEventListener("click", (e) => {
-  const likedIndex = likedList.indexOf(likedInfo.value);
+// eventModalBox.addEventListener("click", (e) => {
+//   const likedIndex = likedList.indexOf(likedInfo.value);
 
-  if (e.target.id === "liked-event") {
-    likedEvent(likedInfo, likedIndex);
-  }
-});
+//   if (e.target.id === "liked-event") {
+//     likedEvent(likedInfo, likedIndex);
+//   }
+// });
 
 //儲存活動
 function likedEvent(likedInfo, likedIndex) {
