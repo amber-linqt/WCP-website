@@ -14,28 +14,56 @@ const showLocate = document.querySelector(".location");
 const likedInfo = document.getElementById("liked-event");
 const likedIcon = document.querySelector(".saved > span");
 
-let likedList = JSON.parse(localStorage.getItem("myList")) || [];
-const allEvent = JSON.parse(localStorage.getItem("myEvent")) || [];
+let allEvent = [];
+let likedList = [];
 
+async function getAllEvent() {
+  try {
+    const response = await fetch("http://localhost:3000/all-events");
+    const data = await response.json();
+    allEvent = data;
+  } catch (err) {
+    console.error('message:"OH NO!"');
+  }
+}
+
+async function getLikedList() {
+  try {
+    const response = await fetch("http://localhost:3000/liked-events");
+    const data = await response.json();
+    likedList = data;
+  } catch (err) {
+    console.error('message:"Cannot fetch liked-list"');
+  }
+}
+
+async function fetchAndLogEvents() {
+  await getAllEvent(); // Await the result of getAllEvent()
+  await getLikedList();
+  showEventBox();
+}
+
+fetchAndLogEvents();
 //liked-event 對應到的info
 //找出對應的index, allEvent[i]帶入updateEventBox Fn
 
-showEventBox();
+async function showEventBox() {
+  await getLikedList();
+  await getAllEvent();
 
-function showEventBox() {
   let likedIndexArr = [];
 
   likedInfoSection.innerHTML = "";
-  console.log(likedList, likedIndexArr, likedIndexArr.length);
 
   if (likedList.length > 0) {
     likedList.forEach((item) => {
-      let dataIndex = allEvent.findIndex((event) => event.id === item);
+      let dataIndex = allEvent.findIndex((event) => event.id === item.eventID);
       let likedOrNot = likedIndexArr.findIndex((item) => item === dataIndex);
       if (likedOrNot === -1) {
         likedIndexArr.push(dataIndex);
       }
     });
+    likedIndexArr = mergeSortNum(likedIndexArr);
     console.log(likedList, likedIndexArr, likedIndexArr.length);
     // 新增的event 出現在網頁上
     for (let i of likedIndexArr) {
@@ -98,7 +126,8 @@ likedInfoSection.addEventListener("click", (e) => {
   }
 });
 
-function clickBox(e) {
+async function clickBox(e) {
+  await getLikedList();
   let clickedBox = e.target.parentElement;
 
   let clicked = {
@@ -133,26 +162,17 @@ function clickBox(e) {
 
   modalperformerInfo.innerHTML = eventInfo.innerHTML;
   modalperformerInfo.classList.remove("hide");
-  showDStart.innerHTML = `${startDate}`;
-  showDEnd.innerHTML = `- ${endDate}`;
-  showTime.innerHTML = time.innerHTML;
-  showLocate.innerHTML =
-    `<i class="fa-solid fa-location-dot"></i> ` + eventLocation.innerHTML;
+  modalShowInfo.innerHTML = `<p class="date start">${startDate}</p><p class="date end" >- ${endDate}</p><p class="time">${time.innerHTML} </p><p class="location"><i class="fa-solid fa-location-dot"></i> ${eventLocation.innerHTML}</p><input type="checkbox" id="liked-event" > <label class="saved"><span>喜歡活動</span><i class="fa-solid fa-feather"></i></label>
+`;
+  const likedInfo = document.getElementById("liked-event");
   likedInfo.setAttribute("value", `${eventId}`);
-  //檢視是否為liked event
-
-  const EventArrIndex = likedList.findIndex((item) => item === likedInfo.value);
-
-  //checked
-  if (EventArrIndex !== -1) {
-    likedInfo.checked = true;
-  } else {
-    likedInfo.checked = false;
-  }
+  const likedIcon = document.querySelector(".saved > span");
+  likedInfo.setAttribute("checked", "");
 
   if (startDate === endDate) {
     modalShowInfo.children[1].classList.add("hide");
   }
+  likedInfo.addEventListener("click", addLiked);
   modal.show();
 }
 
@@ -160,35 +180,65 @@ closeBtn.addEventListener("click", () => {
   modal.close();
 });
 
-const eventModalBox = document.querySelector(".modal-container");
+//加入我的活動
+async function addLiked() {
+  await getLikedList();
+  let likedBtn = this;
+  console.log(this);
 
-eventModalBox.addEventListener("click", (e) => {
-  const likedIndex = likedList.indexOf(likedInfo.value);
+  let likedBtnText = likedBtn.nextElementSibling.children[0];
 
-  if (e.target.id === "liked-event") {
-    likedEvent(likedInfo, likedIndex);
-    showEventBox();
+  const likedIndex = likedList.findIndex(
+    (item) => item.eventID === likedBtn.value
+  );
+  console.log(likedIndex);
+
+  const likedEventID = likedBtn.value;
+  likedEvent(likedBtn, likedIndex, likedEventID, likedBtnText);
+}
+
+//儲存活動
+async function likedEvent(likedBtn, likedIndex, likedEventID, likedBtnText) {
+  if (likedIndex === -1) {
+    const response = await fetch("http://localhost:3000/liked-events", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ eventID: likedEventID }),
+    });
+    const result = await response.json();
+    alert(result.message);
+
+    likedBtn.setAttribute("checked", "");
+    likedBtnText.innerText = "取消喜歡";
+  } else if (likedIndex !== -1) {
+    const deleteResponse = await fetch(
+      `http://localhost:3000/delete/liked-events/${likedEventID}`,
+      {
+        method: "DELETE",
+      }
+    );
+
+    const deleteResult = await deleteResponse.json();
+    alert(deleteResult.message);
+
+    likedBtn.removeAttribute("checked");
+    likedBtnText.innerText = "喜歡活動";
   }
-});
 
-//加入我的頁面
-function likedEvent(likedInfo, likedIndex) {
-  if (likedInfo.checked === true && likedIndex === -1) {
-    likedInfo.setAttribute("checked", "");
-    likedList.push(likedInfo.value);
-    likedIcon.innerText = "取消喜歡";
-  } else {
-    likedInfo.removeAttribute("checked");
-    likedList.splice(likedIndex, 1);
-    likedIcon.innerText = "喜歡活動";
-  }
+  // // localStorage.setItem("myList", JSON.stringify(likedList)); //連同event-info儲存
+  await getLikedList();
 
   if (likedList.length > 0) {
     likedList = mergeSortNum(likedList);
-    localStorage.setItem("myList", JSON.stringify(likedList)); //只儲存event-id
-  } else {
-    localStorage.removeItem("myList");
   }
+  console.log(likedList);
+  showEventBox();
+  // localStorage.setItem("myList", JSON.stringify(likedList)); //只儲存event-id
+  // } else {
+  //   localStorage.removeItem("myList");
+  // }
 }
 //liked event 排序
 function mergeNum(a, b) {

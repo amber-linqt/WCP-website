@@ -295,7 +295,7 @@ body {
         .date {
           font-size: 1.25rem;
           display: inline;
-          padding: 20px 5px;
+          padding: 20px 0;
         }
         .start {
           padding-left: 0.5rem;
@@ -325,6 +325,7 @@ body {
           &:hover + label > .fa-feather {
             cursor: pointer;
             color: $buttonColor;
+            transform: scale(1.05);
           }
 
           &:checked + label > .fa-feather {
@@ -351,18 +352,22 @@ body {
           font-size: 0.75rem;
           bottom: 3.5rem;
           left: 1rem;
+          span {
+            display: none;
+          }
 
           .fa-feather {
             position: relative;
             float: inline-end;
-            right: 1.5rem;
+            right: 1.75rem;
             font-size: 1.25rem;
             padding: 8px;
             color: rgb(192, 192, 192);
-            background-color: $themeColor;
+            // background-color: $themeColor;
             border-radius: 45%;
-            border: 2px solid $themeColor;
+            // border: 2px solid $themeColor;
             z-index: 0;
+            top: 20px;
           }
         }
       }
