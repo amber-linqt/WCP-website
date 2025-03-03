@@ -15,7 +15,7 @@ const previewImg = document.querySelector("#uploadedImage");
 
 //日期
 // event filter，選取filter 和 event-box
-const filterSelect = document.querySelector(".custom-select");
+const filterType = document.getElementById("select-event-type");
 const calender = document.getElementById("calender");
 
 const openEditBoxBtn = document.querySelector(".open-edit-box");
@@ -32,26 +32,33 @@ const showDStart = document.querySelector(".start");
 const showDEnd = document.querySelector(".end");
 const showTime = document.querySelector(".time");
 const showLocate = document.querySelector(".location");
-const likedInfo = document.getElementById("liked-event");
-const likedIcon = document.querySelector(".saved > span");
 
 const modal2 = document.querySelector("#edit-event-box");
 let allEvent = [];
+let likedList = [];
 
 async function getAllEvent() {
   try {
     const response = await fetch("http://localhost:3000/all-events");
     const data = await response.json();
     allEvent = data;
-    console.log(allEvent);
   } catch (err) {
     console.error('message: "OH NO!"');
   }
 }
+
+async function getLikedList() {
+  try {
+    const response = await fetch("http://localhost:3000/liked-events");
+    const data = await response.json();
+    likedList = data;
+  } catch (err) {
+    console.error('message:"Cannot fetch liked-list"');
+  }
+}
 async function fetchAndLogEvents() {
   await getAllEvent(); // Await the result of getAllEvent()
-  console.log("Fetched events:", allEvent); // Now you get the actual array
-
+  await getLikedList();
   updateEventBox();
   newEventBtn();
 }
@@ -63,7 +70,6 @@ const currentTime = new Date();
 
 document.addEventListener("DOMContentLoaded", () => {
   let selectedDate = null;
-
   const formDate = {
     dateFormat: "Y/m/d H:i", //時間格式
     enableTime: true,
@@ -72,18 +78,12 @@ document.addEventListener("DOMContentLoaded", () => {
     allowInput: true, //可輸入控制
     minDate: new Date().setMonth(new Date().getMonth() - 3),
     maxDate: new Date().setMonth(new Date().getMonth() + 6), //可選最大時間，從今天起一個月,
-    // onClose: function (selectedDates, dateStr, instance) {
-    //   checkDateTime(dateStr, instance.input.id);
-    // },
   };
   const filterDate = {
     dateFormat: "F Y", //時間格式
     allowInput: true, //可輸入控制
     minDate: new Date().setMonth(new Date().getMonth() - 7),
     maxDate: new Date().setMonth(new Date().getMonth() + 12), //可選最大時間，從今天起一個月,
-    // onClose: function (selectedDates, dateStr, instance) {
-    //   checkDateTime(dateStr, instance.input.id);
-    // },
     plugins: [
       new monthSelectPlugin({
         shorthand: true, //defaults to false
@@ -92,25 +92,20 @@ document.addEventListener("DOMContentLoaded", () => {
       }),
     ],
   };
-
-  // flatpickr(formDateSelector, formDate);
-  // flatpickr(calender, filterDate);
-  if (calender) {
+  if (
+    calender &&
+    startDate &&
+    endDate
+    // &&
+    // !calender._flatpickr &&
+    // !startDate._flatpickr &&
+    // !endDate._flatpickr
+  ) {
     flatpickr(calender, filterDate);
-  } else {
-    console.error("錯誤：找不到 #calender");
-  }
-
-  if (startDate) {
     flatpickr(startDate, formDate);
-  } else {
-    console.error("錯誤：找不到 #startDate");
-  }
-
-  if (endDate) {
     flatpickr(endDate, formDate);
   } else {
-    console.error("錯誤：找不到 #endDate");
+    console.error("Flatpickr initialization failed: Element not found.");
   }
 });
 
@@ -138,14 +133,65 @@ addBtn.addEventListener("click", (e) => {
 closeBtn[1].addEventListener("click", (e) => {
   modal2.close();
 });
-submitBtn.addEventListener("submit", () => {
+submitBtn.addEventListener("click", () => {
   addOrUppdateEvent();
 });
-mainSection.addEventListener("click", (e) => {
-  if ((e.target.parentElement.className = "eventBox")) {
-    modal.show();
-  }
+
+filterType.addEventListener("change", (e) => {
+  filterBox(e);
 });
+
+calender.addEventListener("change", (e) => dayFilter(e));
+
+//篩選活動類型
+async function filterBox(e) {
+  await getAllEvent();
+  let eventBox = document.querySelectorAll(".event-box");
+  let selected = document.querySelector(".active");
+
+  selected.classList.remove("active");
+  e.target.selectedOptions[0].classList.add("active");
+
+  //---開始篩選---
+  eventBox.forEach((eventBox) => {
+    eventBox.classList.add("hide");
+    if (
+      eventBox.dataset.name === e.target.selectedOptions[0].id ||
+      e.target.selectedOptions[0].id === "all-type"
+    ) {
+      eventBox.classList.remove("hide");
+    }
+  });
+}
+async function dayFilter(e) {
+  await getAllEvent();
+  let eventBox = document.querySelectorAll(".event-box");
+  let selectedYear = calender._flatpickr.latestSelectedDateObj.getUTCFullYear();
+  let selectedMonth = (calender._flatpickr.latestSelectedDateObj.getMonth() + 1)
+    .toString()
+    .padStart(2, 0);
+
+  if (selectedMonth === "01") {
+    selectedYear += 1;
+  }
+  selectedYear.toString();
+
+  eventBox.forEach((eventBox) => {
+    let eventSYM = eventBox.id.slice(0, 6);
+    let eventEYM = eventBox.id.slice(9, 15);
+
+    eventBox.classList.add("hide");
+    //篩選當月當日及多日活動
+    if (
+      eventSYM === selectedYear + selectedMonth || //當日活動
+      (eventBox.children[2].children[2].classList.length !== 3 && // 多日活動
+        eventSYM <= selectedYear + selectedMonth &&
+        eventEYM >= selectedYear + selectedMonth)
+    ) {
+      eventBox.classList.remove("hide");
+    }
+  });
+}
 
 //壓縮圖片
 function compressImg(file, callback) {
@@ -212,6 +258,7 @@ async function addOrUppdateEvent() {
   const EventArrIndex = allEvent.findIndex(
     (item) => item.id === currentTask.id
   );
+
   const eventObj = {
     type: eventType.selectedOptions[0].dataset.name,
     title: titleInput.value.trim(),
@@ -269,32 +316,46 @@ async function addOrUppdateEvent() {
   }
 
   if (EventArrIndex === -1) {
-    allEvent.push(eventObj); //新增在尾端
+    const response = await fetch("http://localhost:3000/all-events", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(eventObj),
+    });
+    const result = await response.json();
+    alert(result.message);
+    // allEvent.push(eventObj); //新增在尾端
   } else {
-    allEvent[EventArrIndex] = eventObj;
+    //更改 mysql 中的該筆資料
+    const updateResponse = await fetch(
+      `http://localhost:3000/all-events/${currentTask.id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(eventObj),
+      }
+    );
+
+    const updateResult = await updateResponse.json();
+    alert(updateResult.message);
+    // allEvent[EventArrIndex] = eventObj;
     modal2.close();
   }
 
   // localStorage.setItem("myEvent", JSON.stringify(allEvent));
   //發送資料 backend
-  const response = await fetch("http://localhost:3000/all-events", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(eventObj),
-  });
-  const result = await response.json();
-  alert(result.message);
-  console.log(allEvent);
 
   allEvent = mergeSort(allEvent);
   updateEventBox(); //main.append
+  newEventBtn();
   eventForm.reset(); //表單送出後清空form;
 }
 
-function updateEventBox() {
-  console.log(allEvent);
+async function updateEventBox() {
+  await getAllEvent();
 
   allEvent = mergeSort(allEvent);
 
@@ -350,7 +411,10 @@ function updateEventBox() {
   });
 }
 
-function newEventBtn() {
+async function newEventBtn() {
+  await getAllEvent();
+  allEvent = mergeSort(allEvent);
+
   addedEvent.innerHTML = "";
   allEvent.forEach((eventObj) => {
     let editEventDiv = document.createElement("div");
@@ -376,6 +440,77 @@ function newEventBtn() {
     //刪除功能
     addTrashBtn.addEventListener("click", deleteEvent);
   });
+}
+// 每個 eventBox 點開，都會觸發modal
+
+mainSection.addEventListener("click", (e) => {
+  if (e.target.parentElement.classList.value === "event-box") {
+    clickBox(e);
+  }
+});
+closeBtn[2].addEventListener("click", () => {
+  modal.close();
+});
+
+async function clickBox(e) {
+  await getLikedList();
+  let clickedBox = e.target.parentElement;
+
+  let clicked = {
+    eventId: clickedBox.id,
+    eventTitle: clickedBox.children[4].children[0],
+    eventImg: clickedBox.children[1].children[0],
+    eventInfo: clickedBox.children[3].children[0],
+    startDate:
+      clickedBox.children[2].children[0].innerText +
+      clickedBox.children[2].children[1].innerText +
+      "日",
+    endDate:
+      clickedBox.children[2].children[2].innerText +
+      clickedBox.children[2].children[3].innerText +
+      "日",
+    eventLocation: clickedBox.children[4].children[2],
+    time: clickedBox.children[4].children[4],
+  };
+  let {
+    eventId,
+    eventTitle,
+    eventImg,
+    eventInfo,
+    startDate,
+    endDate,
+    eventLocation,
+    time,
+  } = clicked;
+
+  modalBandName.innerHTML = eventTitle.innerHTML;
+  modalImg.src = eventImg.src;
+
+  modalperformerInfo.innerHTML = eventInfo.innerHTML;
+  modalperformerInfo.classList.remove("hide");
+  modalShowInfo.innerHTML = `<p class="date start">${startDate}</p><p class="date end" >- ${endDate}</p><p class="time">${time.innerHTML} </p><p class="location"><i class="fa-solid fa-location-dot"></i> ${eventLocation.innerHTML}</p><input type="checkbox" id="liked-event" > <label class="saved"><span>喜歡活動</span><i class="fa-solid fa-feather"></i></label>
+`;
+  const likedInfo = document.getElementById("liked-event");
+  likedInfo.setAttribute("value", `${eventId}`);
+  const likedIcon = document.querySelector(".saved > span");
+
+  //檢視是否為liked event
+  const EventArrIndex = likedList.findIndex(
+    (item) => item.eventID === likedInfo.value
+  );
+
+  if (EventArrIndex !== -1) {
+    likedInfo.setAttribute("checked", "");
+    likedIcon.innerText = "取消喜歡";
+  }
+
+  if (startDate === endDate) {
+    modalShowInfo.children[1].classList.add("hide");
+  }
+
+  likedInfo.addEventListener("click", addLiked);
+
+  modal.show();
 }
 
 function editEventForm(e) {
@@ -450,17 +585,23 @@ function showEventForm(e) {
   modal2.show();
 }
 
-function deleteEvent(e) {
+async function deleteEvent(e) {
   let trashBtn = this;
-  const EventArrIndex = allEvent.findIndex(
-    (eventObj) => eventObj.id === trashBtn.parentElement.id
-  );
+  const eventId = trashBtn.parentElement.id;
 
-  trashBtn.parentElement.remove(); //重表單移除
-  allEvent.splice(EventArrIndex, 1);
+  try {
+    const response = await fetch(`http://localhost:3000/delete/${eventId}`, {
+      method: "DELETE",
+    });
 
-  localStorage.setItem("myEvent", JSON.stringify(allEvent));
-  updateEventBox();
+    if (!response.ok) throw new Error("活動刪除失敗");
+    trashBtn.parentElement.remove(); //重表單移除
+    updateEventBox();
+  } catch (error) {
+    console.error("Error deleting event:", error);
+  }
+  // allEvent.splice(EventArrIndex, 1);
+  //   localStorage.setItem("myEvent", JSON.stringify(allEvent));
 }
 
 // 活動依照開始日排序
@@ -511,37 +652,64 @@ function mergeSort(arr) {
 }
 
 //加入我的活動
-// const eventModalBox = document.querySelector(".modal-container");
+async function addLiked() {
+  await getLikedList();
+  let likedBtn = this;
+  console.log(this);
 
-// eventModalBox.addEventListener("click", (e) => {
-//   const likedIndex = likedList.indexOf(likedInfo.value);
+  let likedBtnText = likedBtn.nextElementSibling.children[0];
 
-//   if (e.target.id === "liked-event") {
-//     likedEvent(likedInfo, likedIndex);
-//   }
-// });
+  const likedIndex = likedList.findIndex(
+    (item) => item.eventID === likedBtn.value
+  );
+  console.log(likedIndex);
+
+  const likedEventID = likedBtn.value;
+  likedEvent(likedBtn, likedIndex, likedEventID, likedBtnText);
+}
 
 //儲存活動
-function likedEvent(likedInfo, likedIndex) {
-  // const dataindex = allEvent.findIndex((event) => event.id === likedInfo.value);
+async function likedEvent(likedBtn, likedIndex, likedEventID, likedBtnText) {
+  if (likedIndex === -1) {
+    const response = await fetch("http://localhost:3000/liked-events", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ eventID: likedEventID }),
+    });
+    const result = await response.json();
+    alert(result.message);
 
-  if (likedInfo.checked === true && likedIndex === -1) {
-    likedInfo.setAttribute("checked", "");
-    likedList.push(likedInfo.value);
-    likedIcon.innerText = "取消喜歡";
-  } else {
-    likedInfo.removeAttribute("checked");
-    likedList.splice(likedIndex, 1);
-    likedIcon.innerText = "喜歡活動";
+    likedBtn.setAttribute("checked", "");
+    likedBtnText.innerText = "取消喜歡";
+  } else if (likedIndex !== -1) {
+    const deleteResponse = await fetch(
+      `http://localhost:3000/delete/liked-events/${likedEventID}`,
+      {
+        method: "DELETE",
+      }
+    );
+
+    const deleteResult = await deleteResponse.json();
+    alert(deleteResult.message);
+
+    likedBtn.removeAttribute("checked");
+    likedBtnText.innerText = "喜歡活動";
   }
 
   // // localStorage.setItem("myList", JSON.stringify(likedList)); //連同event-info儲存
+  await getLikedList();
+
   if (likedList.length > 0) {
     likedList = mergeSortNum(likedList);
-    localStorage.setItem("myList", JSON.stringify(likedList)); //只儲存event-id
-  } else {
-    localStorage.removeItem("myList");
   }
+  console.log(likedList);
+
+  // localStorage.setItem("myList", JSON.stringify(likedList)); //只儲存event-id
+  // } else {
+  //   localStorage.removeItem("myList");
+  // }
 }
 //liked event 排序
 function mergeNum(a, b) {
