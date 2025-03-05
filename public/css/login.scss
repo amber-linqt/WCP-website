@@ -83,7 +83,7 @@ body {
     background-color: rgba(137, 43, 43, 0.786);
     display: flex;
     flex-direction: row;
-    height: 80vh;
+    height: 100vh;
     .left {
       width: 50%;
       display: flex;
@@ -118,7 +118,7 @@ body {
       .switch-btn {
         width: 60%;
         position: relative;
-        top: 2.5%;
+        top: 12.5%;
         left: 5%;
 
         button {
@@ -142,6 +142,8 @@ body {
         }
       }
       .member-form {
+        position: relative;
+        top: 10%;
         background-color: #f2eee9;
         border-radius: 10px;
         height: 80%;
