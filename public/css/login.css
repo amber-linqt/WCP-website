@@ -218,9 +218,11 @@ body main .right .member-form .down-button:hover {
   background-color: #fab4a6;
 }
 body main .right .new-member {
+  position: relative;
   background-color: #f2eee9;
   height: 80%;
   width: 60%;
+  top: 10%;
   border-radius: 10px;
 }
 body main .right .new-member form {

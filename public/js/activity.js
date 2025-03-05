@@ -352,6 +352,7 @@ async function addOrUppdateEvent() {
   updateEventBox(); //main.append
   newEventBtn();
   eventForm.reset(); //表單送出後清空form;
+  previewImg = "";
 }
 
 async function updateEventBox() {

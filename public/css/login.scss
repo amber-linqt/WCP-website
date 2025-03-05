@@ -237,9 +237,11 @@ body {
         }
       }
       .new-member {
+        position: relative;
         background-color: #f2eee9;
         height: 80%;
         width: 60%;
+        top: 10%;
         border-radius: 10px;
 
         form {

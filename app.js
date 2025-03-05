@@ -82,7 +82,7 @@ app.post("/all-events", (req, res) => {
       console.error(err);
       return res.status(500).json({ message: "活動儲存失敗" });
     }
-    res.json({ message: "活動儲存成功" });
+    // res.json({ message: "活動儲存成功" });
   });
 });
 
@@ -149,7 +149,7 @@ app.put("/all-events/:id", async (req, res) => {
       return res.status(500).json({ message: "活動更新失敗，資料未被新增！" });
     }
 
-    res.json({ message: "活動更新成功！" });
+    // res.json({ message: "活動更新成功！" });
   } catch (error) {
     res.status(500).json({ message: "更新失敗", error });
   }
@@ -179,7 +179,7 @@ app.post("/liked-events", (req, res) => {
       console.error(err);
       return res.status(500).json({ message: "加入失敗" });
     }
-    res.json({ message: "成功加入" });
+    // res.json({ message: "成功加入" });
   });
 });
 app.delete("/delete/liked-events/:id", (req, res) => {
@@ -190,7 +190,7 @@ app.delete("/delete/liked-events/:id", (req, res) => {
     if (err) {
       return res.status(500).send({ error: err.message });
     }
-    res.send({ message: "移除我的最愛" });
+    // res.send({ message: "移除我的最愛" });
   });
 });
 
