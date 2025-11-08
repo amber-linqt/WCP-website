@@ -195,6 +195,7 @@ async function addLiked() {
 
   const likedEventID = likedBtn.value;
   likedEvent(likedBtn, likedIndex, likedEventID, likedBtnText);
+  showEventBox();
 }
 
 //儲存活動
